@@ -1,1 +1,41 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planten en Recepten</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Welkom bij Planten en Recepten</h1>
+        <p>Verken onze planten en ontdek heerlijke recepten!</p>
+    </header>
+
+    <section class="plant-gallery">
+        <div class="plant-item" onclick="showRecipe('plant1')">
+            <img src="images/plant1.jpg" alt="Plant 1">
+            <p>Plant 1</p>
+        </div>
+        <div class="plant-item" onclick="showRecipe('plant2')">
+            <img src="images/plant2.jpg" alt="Plant 2">
+            <p>Plant 2</p>
+        </div>
+        <div class="plant-item" onclick="showRecipe('plant3')">
+            <img src="images/plant3.jpg" alt="Plant 3">
+            <p>Plant 3</p>
+        </div>
+    </section>
+
+    <div id="recipe-modal" class="recipe-modal">
+        <div class="recipe-content">
+            <span class="close" onclick="closeRecipe()">×</span>
+            <h2 id="recipe-title"></h2>
+            <p id="recipe-text"></p>
+        </div>
+    </div>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
 
