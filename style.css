@@ -30,7 +30,7 @@ header {
 .main-nav ul {
   list-style: none;
   display: flex;
-  gap: 20px;
+  gap: 40px;
   justify-content: center;
   margin: 0;
   padding: 0;
