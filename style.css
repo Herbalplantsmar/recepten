@@ -17,7 +17,7 @@ header {
 .plant-gallery {
     display: flex;
     justify-content: center;
-    gap: 200px;
+    gap: 20px;
     flex-wrap: wrap;
     padding: 20px;
 }
