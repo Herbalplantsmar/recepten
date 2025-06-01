@@ -2,7 +2,7 @@ const plantDatabase = {
   pimpernel: {
     name: "Kleine pimpernel",
     latin: "Sanguisorba minor",
-    image: "Afbeeldingen/IMG_7433.jpg",
+    image: "Afbeeldingen/IMG_9410.jpg",
     recipe: "Heerlijk in een salade met jonge blaadjes en wat citroenolie.",
     info: "Kleine pimpernel is een eetbare wilde plant die vaak voorkomt op droge graslanden."
   },
