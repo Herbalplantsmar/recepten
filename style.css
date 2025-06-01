@@ -87,10 +87,21 @@ a {
 }
 
 .plant-item img {
-    width: 350px;
-    height: 350px;
+    width: 100%;
+    max-width: 350px;
+    height: auto;
     object-fit: cover;
     border-radius: 1px;
+}
+@media (max-width: 600px) {
+  .plant-gallery {
+    flex-direction: column;
+    padding: 10px;
+  }
+  .plant-item {
+    width: 100%;
+    margin-bottom: 20px;
+  }
 }
 
 .plant-item:hover {
