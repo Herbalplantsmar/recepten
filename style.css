@@ -52,27 +52,18 @@ header {
   color: #006600;
 }
 #plant-search {
-  padding: 6px 10px;
-  font-size: 12px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  width: 60px
-}
-a {
-  color: black;
-  text-decoration: none;
-}
-#plant-search {
   font-family: Garamond;
   width: 80%;
-  max-width: 400px;
+  max-width: 60px;
   padding: 10px;
-  font-size: 16px;
+  font-size: 12px;
   margin: 30px auto;
   display: block;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+  border-radius: 1px;
+  border: 0px solid #ccc;
+  color: black; 
 }
+
 
 .plant-gallery {
     max-width: 1200px;
