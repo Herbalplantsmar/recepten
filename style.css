@@ -28,10 +28,10 @@ header {
 }
 
 .plant-item img {
-    width: 250px;
-    height: 250px;
+    width: 350px;
+    height: 350px;
     object-fit: cover;
-    border-radius: 10px;
+    border-radius: 1px;
 }
 
 .plant-item:hover {
