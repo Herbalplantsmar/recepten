@@ -17,6 +17,11 @@ header {
     background-color: #e2f3e3;
     padding: 100px;
 }
+@media (max-width: 600px) {
+  header {
+    padding: 20px;
+  }
+}
 .main-nav {
   background-color: #f7f7f7;
   padding: 12px 40px;
@@ -101,6 +106,13 @@ a {
   .plant-item {
     width: 100%;
     margin-bottom: 20px;
+  }
+}
+ h1 {
+    font-size: 28px;
+  }
+  header {
+    padding: 20px;
   }
 }
 
