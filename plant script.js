@@ -1,3 +1,20 @@
+const params = new URLSearchParams(window.location.search);
+const plantKey = params.get("plant");
+const plant = plantData[plantKey];
+
+if (plant) {
+  document.getElementById("plant-title").innerText = plant.name;
+  document.getElementById("plant-img").src = plant.image;
+  document.getElementById("plant-img").alt = plant.name;
+  document.getElementById("plant-info").innerText = plant.info;
+  document.getElementById("plant-recipe").innerText = plant.recipe;
+} else {
+  // handle no plant found case
+  document.querySelector(".plant-details").innerHTML = "<p>Plant niet gevonden.</p>";
+}
+
+
+
 const recipes = {
     plant1: {
         title: "Recept voor Plant 1",
