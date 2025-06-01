@@ -47,6 +47,11 @@ header {
   color: #006600;
 }
 
+a {
+  color: black;
+  text-decoration: none;
+}
+
 .plant-gallery {
     max-width: 1200px;
     margin: 0 auto; 
