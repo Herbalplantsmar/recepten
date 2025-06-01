@@ -13,6 +13,35 @@ header {
     background-color: #e2f3e3;
     padding: 50px;
 }
+.main-nav {
+  background-color: #f7f7f7;
+  padding: 12px 24px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid #ccc;
+}
+
+.main-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+}
+
+.main-nav li a {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+
+.main-nav li a:hover {
+  color: #006600;
+}
 
 .plant-gallery {
     display: flex;
