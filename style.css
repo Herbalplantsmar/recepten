@@ -6,8 +6,12 @@ body {
 }
 
 h1 {
-    color: #2c6e49;
-    font-size: 60px;
+  color: #2c6e49;
+  font-size: 60px;
+  text-align: center;
+  margin-top: 20px;
+}
+
 }
 
 header {
