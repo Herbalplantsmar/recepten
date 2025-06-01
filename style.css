@@ -47,10 +47,11 @@ header {
   color: #006600;
 }
 #plant-search {
-  padding: 8px;
-  font-size: 14px;
+  padding: 6px 10px;
+  font-size: 12px;
   border-radius: 5px;
   border: 1px solid #ccc;
+  width: 120px
 }
 a {
   color: black;
