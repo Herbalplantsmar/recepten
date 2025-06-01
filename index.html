@@ -20,11 +20,14 @@
     </ul>
   </nav>
 </header>
+    
+<input type="text" id="plant-search" placeholder="Zoek plant, seizoen of recept..." />
+
 <body>
     <section class="plant-gallery">
 
 <a href="planten.html?plant=pimpernel">
-      <div class="plant-item">
+      <div class="plant-item" data-name="pimpernel" onclick="location.href='planten.html?plant=pimpernel'">
             <img src="Afbeeldingen/IMG_9410.jpg" alt="Kleine pimpernel">
             <p>Kleine pimpernel<br><em>Sanguisorba minor</em></p>
         </div>
@@ -118,6 +121,22 @@
     </div>
 
     <script src="scripts.js"></script>
+    <script>
+  const searchInput = document.getElementById('plant-search');
+  const plantItems = document.querySelectorAll('.plant-item');
+
+  searchInput.addEventListener('input', function () {
+    const query = this.value.toLowerCase();
+    plantItems.forEach(item => {
+      const name = item.getAttribute('data-name').toLowerCase();
+      if (name.includes(query)) {
+        item.style.display = 'block';
+      } else {
+        item.style.display = 'none';
+      }
+    });
+  });
+</script>
 </body>
 </html>
 
