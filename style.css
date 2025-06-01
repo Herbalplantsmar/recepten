@@ -51,6 +51,16 @@ a {
   color: black;
   text-decoration: none;
 }
+#plant-search {
+  width: 80%;
+  max-width: 400px;
+  padding: 10px;
+  font-size: 16px;
+  margin: 30px auto;
+  display: block;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
 
 .plant-gallery {
     max-width: 1200px;
