@@ -4,6 +4,7 @@ const plant = plantData[plantKey];
 
 if (plant) {
   document.getElementById("plant-title").innerText = plant.name;
+  document.getElementByID("latin-name").innerText = plant.latin;
   document.getElementById("plant-img").src = plant.image;
   document.getElementById("plant-img").alt = plant.name;
   document.getElementById("plant-info").innerText = plant.info;
