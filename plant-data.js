@@ -16,22 +16,84 @@ const plantDatabase = {
   brandnetel: {
     name: "Brandnetel",
     latin: "Urtica dioica",
-    image: "Afbeeldingen/brandnetel.jpg",
+    image: "Afbeeldingen/IMG_7433.jpg",
     recipe: "Maak een soep van jonge toppen, rijk aan ijzer.",
     info: "Brandnetels zijn voedzaam en veelzijdig in de keuken."
   },
   paardenbloem: {
     name: "Paardenbloem",
     latin: "Taraxacum officinale",
-    image: "Afbeeldingen/paardenbloem.jpg",
+    image: "Afbeeldingen/IMG_7283.jpg",
     recipe: "Gebruik de bloemen voor siroop of de bladeren in salade.",
     info: "Een van de meest herkenbare eetbare wilde planten."
   },
-  hazelaar: {
+  veldkers: {
     name: "Hazelaar",
     latin: "Corylus avellana",
     image: "Afbeeldingen/plant2.jpg",
     recipe: "Combineer de jonge bladeren met walnoten en honing in een groene smoothie.",
     info: "De hazelaar is een veelvoorkomende struik in Europa met eetbare noten."
-  }
-};
+  },
+  hazelaar: {
+    name: "Hazelaar",
+    latin: "Corylus avellana",
+    image: "Afbeeldingen/plant1.jpg",
+    recipe: "Combineer de jonge bladeren met walnoten en honing in een groene smoothie.",
+    info: "De hazelaar is een veelvoorkomende struik in Europa met eetbare noten."
+  },
+ vijg: {
+    name: "Paardenbloem",
+    latin: "Taraxacum officinale",
+    image: "Afbeeldingen/IMG_1918.jpg",
+    recipe: "Gebruik de bloemen voor siroop of de bladeren in salade.",
+    info: "Een van de meest herkenbare eetbare wilde planten."
+  },
+   mirtsalie: {
+    name: "Paardenbloem",
+    latin: "Taraxacum officinale",
+    image: "Afbeeldingen/IMG_9198.jpg",
+    recipe: "Gebruik de bloemen voor siroop of de bladeren in salade.",
+    info: "Een van de meest herkenbare eetbare wilde planten."
+  },
+   weegbree: {
+    name: "Paardenbloem",
+    latin: "Taraxacum officinale",
+    image: "Afbeeldingen/IMG_0825.jpg",
+    recipe: "Gebruik de bloemen voor siroop of de bladeren in salade.",
+    info: "Een van de meest herkenbare eetbare wilde planten."
+  },
+   sleedoorn: {
+    name: "Paardenbloem",
+    latin: "Taraxacum officinale",
+    image: "Afbeeldingen/IMG_7510.jpg",
+    recipe: "Gebruik de bloemen voor siroop of de bladeren in salade.",
+    info: "Een van de meest herkenbare eetbare wilde planten."
+  },
+   tammekastangje: {
+    name: "Paardenbloem",
+    latin: "Taraxacum officinale",
+    image: "Afbeeldingen/IMG_0389.jpg",
+    recipe: "Gebruik de bloemen voor siroop of de bladeren in salade.",
+    info: "Een van de meest herkenbare eetbare wilde planten."
+  },
+   oca: {
+    name: "Paardenbloem",
+    latin: "Taraxacum officinale",
+    image: "Afbeeldingen/IMG_0733.jpg",
+    recipe: "Gebruik de bloemen voor siroop of de bladeren in salade.",
+    info: "Een van de meest herkenbare eetbare wilde planten."
+  },
+   vlier: {
+    name: "Paardenbloem",
+    latin: "Taraxacum officinale",
+    image: "Afbeeldingen/IMG_7472.jpg",
+    recipe: "Gebruik de bloemen voor siroop of de bladeren in salade.",
+    info: "Een van de meest herkenbare eetbare wilde planten."
+  },
+ venkel: {
+    name: "Paardenbloem",
+    latin: "Taraxacum officinale",
+    image: "Afbeeldingen/IMG_7068.jpg",
+    recipe: "Gebruik de bloemen voor siroop of de bladeren in salade.",
+    info: "Een van de meest herkenbare eetbare wilde planten."
+  },
