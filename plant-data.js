@@ -13,4 +13,46 @@ const plantDatabase = {
     recipe: "Combineer de jonge bladeren met walnoten en honing in een groene smoothie.",
     info: "De hazelaar is een veelvoorkomende struik in Europa met eetbare noten."
   },
+    hazelaar: {
+    name: "Hazelaar",
+    latin: "Corylus avellana",
+    image: "Afbeeldingen/plant2.jpg",
+    recipe: "Combineer de jonge bladeren met walnoten en honing in een groene smoothie.",
+    info: "De hazelaar is een veelvoorkomende struik in Europa met eetbare noten."
+  },
+    hazelaar: {
+    name: "Hazelaar",
+    latin: "Corylus avellana",
+    image: "Afbeeldingen/plant2.jpg",
+    recipe: "Combineer de jonge bladeren met walnoten en honing in een groene smoothie.",
+    info: "De hazelaar is een veelvoorkomende struik in Europa met eetbare noten."
+  },
+    hazelaar: {
+    name: "Hazelaar",
+    latin: "Corylus avellana",
+    image: "Afbeeldingen/plant2.jpg",
+    recipe: "Combineer de jonge bladeren met walnoten en honing in een groene smoothie.",
+    info: "De hazelaar is een veelvoorkomende struik in Europa met eetbare noten."
+  },
+    hazelaar: {
+    name: "Hazelaar",
+    latin: "Corylus avellana",
+    image: "Afbeeldingen/plant2.jpg",
+    recipe: "Combineer de jonge bladeren met walnoten en honing in een groene smoothie.",
+    info: "De hazelaar is een veelvoorkomende struik in Europa met eetbare noten."
+  },
+    hazelaar: {
+    name: "Hazelaar",
+    latin: "Corylus avellana",
+    image: "Afbeeldingen/plant2.jpg",
+    recipe: "Combineer de jonge bladeren met walnoten en honing in een groene smoothie.",
+    info: "De hazelaar is een veelvoorkomende struik in Europa met eetbare noten."
+  },
+    hazelaar: {
+    name: "Hazelaar",
+    latin: "Corylus avellana",
+    image: "Afbeeldingen/plant2.jpg",
+    recipe: "Combineer de jonge bladeren met walnoten en honing in een groene smoothie.",
+    info: "De hazelaar is een veelvoorkomende struik in Europa met eetbare noten."
+  },
 
