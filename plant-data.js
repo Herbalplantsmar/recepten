@@ -3,8 +3,8 @@ const plantDatabase = {
     name: "Kleine pimpernel",
     latin: "Sanguisorba minor",
     image: "Afbeeldingen/IMG_9410.jpg",
-    recipe: "Heerlijk in een salade met jonge blaadjes en wat citroenolie.",
-    info: "Kleine pimpernel is een eetbare wilde plant die vaak voorkomt op droge graslanden."
+    recipe: "Hier werd ze afgelopen week verwerkt in een spread van cannellinibonen met tahini, honing, citroenmelisse, citroen, knoflook, olijfolie en zeezout. Ook heerlijk in een salade met jonge blaadjes en wat citroenolie.",
+    info: "Fris, komkommerachtig kruid met notige en soms bittere tonen uit de familie van de rozen. Is spontaan in de moestuin aan komen waaien en is ontzettend mooi! Helaas wordt ze bedreigd (Rode Lijst), maar mocht ze bij jou komen aanwaaien, dan is dat misschien een teken dat er binnenkort wat blaadjes op je bord mogen verschijnen :) Het kruid stelpt bloed en werkt verdrogend door het hoge gehalte aan looistoffen. Kleine pimpernel is een eetbare wilde plant die vaak voorkomt op droge graslanden."
   },
   groveden: {
     name: "Grove den",
