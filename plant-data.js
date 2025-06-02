@@ -1,3 +1,11 @@
+ const plantDatabase = {
+   groveden: {
+    name: "Grove den",
+    latin: "Pinus sylvestris",
+    image: "Afbeeldingen/pinussylvestris1.jpeg",
+    recipe: "Gebruik jonge naalden in een thee.",
+    info: "De grove den is een naaldboom die veel voorkomt in Europa."
+  },
 const plantDatabase = {
   pimpernel: {
     name: "Kleine pimpernel",
@@ -97,4 +105,4 @@ const plantDatabase = {
     image: "Afbeeldingen/plant2.jpg",
     recipe: "Combineer de jonge bladeren met walnoten en honing in een groene smoothie.",
     info: "De hazelaar is een veelvoorkomende struik in Europa met eetbare noten."
-  },
+  };
