@@ -8,7 +8,7 @@ body {
 h1 {
   color: #2c6e49;
   background-color: #e2f3e3;
-  font-size: 70px;
+  font-size: 80px;
   text-align: center;
   margin-top: 60px;
 }
@@ -62,7 +62,7 @@ header {
   border-radius: 1px;
   border: 0px solid #ccc;
   color: black; 
-  position: right;
+  position: next to main-nav li a;
 }
 @media (max-width: 768px) {
   .main-nav {
@@ -107,7 +107,7 @@ header {
 
 .plant-item img {
   width: 100%;
-  max-width: 350px;
+  max-width: 600px;
   height: auto;
   object-fit: cover;
   border-radius: 1px;
