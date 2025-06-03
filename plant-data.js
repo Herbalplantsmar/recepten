@@ -96,4 +96,4 @@ const plantDatabase = {
     image: "Afbeeldingen/IMG_7068.jpg",
     recipe: "Gebruik de bloemen voor siroop of de bladeren in salade.",
     info: "Een van de meest herkenbare eetbare wilde planten."
-  },
+  };
