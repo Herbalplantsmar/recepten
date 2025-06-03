@@ -28,8 +28,8 @@ const plantDatabase = {
     info: "Een van de meest herkenbare eetbare wilde planten."
   },
   veldkers: {
-    name: "Hazelaar",
-    latin: "Corylus avellana",
+    name: "Veldkers",
+    latin: "Cardamine hirsuta",
     image: "Afbeeldingen/plant2.jpg",
     recipe: "Combineer de jonge bladeren met walnoten en honing in een groene smoothie.",
     info: "De hazelaar is een veelvoorkomende struik in Europa met eetbare noten."
@@ -42,15 +42,15 @@ const plantDatabase = {
     info: "De hazelaar is een veelvoorkomende struik in Europa met eetbare noten."
   },
  vijg: {
-    name: "Paardenbloem",
-    latin: "Taraxacum officinale",
+    name: "Vijg",
+    latin: "Ficus carica",
     image: "Afbeeldingen/IMG_1918.jpg",
     recipe: "Gebruik de bloemen voor siroop of de bladeren in salade.",
     info: "Een van de meest herkenbare eetbare wilde planten."
   },
    mirtsalie: {
-    name: "Paardenbloem",
-    latin: "Taraxacum officinale",
+    name: "Mirt-Salie",
+    latin: "Salvia microphylla",
     image: "Afbeeldingen/IMG_9198.jpg",
     recipe: "Gebruik de bloemen voor siroop of de bladeren in salade.",
     info: "Een van de meest herkenbare eetbare wilde planten."
