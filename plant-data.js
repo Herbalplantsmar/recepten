@@ -1,4 +1,12 @@
 const plantDatabase = {
+    zevenblad: {
+    name: "Zevenblad",
+    latin: "Aegopodium podagraria",
+    image: "Afbeeldingen/IMG_Zevenblad.jpeg",
+    recipe: "Zevenblad is heel veelzijdig. Het heeft een kruidige, zilte smaak zonder bitter zoals de meeste wilde planten wel hebben. 
+      Het leent zich goed voor soepen, omeletten, lasagna's, pesto's, door de roerbak of gekookt als groenten in zout water met daarna een klontje boter erbij",
+    info: "Het blad en de bloemen zijn eetbaar rauw of gekookt. Het blad is goed te herkennen, maar de bloemen lijken erg op vele andere schermbloemigen, let daarbij goed op dat je niet per ongeluk een andere schermbloem eet die giftig is."
+  },
   pimpernel: {
     name: "Kleine pimpernel",
     latin: "Sanguisorba minor",
