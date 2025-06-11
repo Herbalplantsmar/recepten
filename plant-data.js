@@ -1,4 +1,4 @@
-const plantDatabase = {
+const plantDatabase = {,
     zevenblad: {
     name: "Zevenblad",
     latin: "Aegopodium podagraria",
