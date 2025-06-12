@@ -1,10 +1,10 @@
-const plantDatabase = {,
-    zevenblad: {
+const plantDatabase = {
+  zevenblad: {
     name: "Zevenblad",
     latin: "Aegopodium podagraria",
     image: "Afbeeldingen/IMG_Zevenblad.jpeg",
-    recipe: "Zevenblad is heel veelzijdig. Het heeft een kruidige, zilte smaak zonder bitter zoals de meeste wilde planten wel hebben. 
-      Het leent zich goed voor soepen, omeletten, lasagna's, pesto's, door de roerbak of gekookt als groenten in zout water met daarna een klontje boter erbij",
+    recipe: `Zevenblad is heel veelzijdig. Het heeft een kruidige, zilte smaak zonder bitter zoals de meeste wilde planten wel hebben. 
+Het leent zich goed voor soepen, omeletten, lasagna's, pesto's, door de roerbak of gekookt als groenten in zout water met daarna een klontje boter erbij`,
     info: "Het blad en de bloemen zijn eetbaar rauw of gekookt. Het blad is goed te herkennen, maar de bloemen lijken erg op vele andere schermbloemigen, let daarbij goed op dat je niet per ongeluk een andere schermbloem eet die giftig is."
   },
   pimpernel: {
@@ -18,9 +18,9 @@ const plantDatabase = {,
     name: "Grove den",
     latin: "Pinus sylvestris",
     image: "Afbeeldingen/pinussylvestris1.jpeg",
-    recipe: "Muglio - Dennenappel siroop uit Noord-Italie <br> 
-     In dit geval met de jonge appels van de Grove Den (Pinus sylvestris). Het hele aroma rond deze boom is fantastisch en de dennennaalden kan je het hele jaar door 
-  vinden, plukken, eten, gebruiken in thee: bron van vitamine C.  ",
+    recipe: `Muglio - Dennenappel siroop uit Noord-Italie <br> 
+In dit geval met de jonge appels van de Grove Den (Pinus sylvestris). Het hele aroma rond deze boom is fantastisch en de dennennaalden kan je het hele jaar door 
+vinden, plukken, eten, gebruiken in thee: bron van vitamine C.`,
     info: "De grove den is een inheemse boom met geneeskrachtige eigenschappen."
   },
   brandnetel: {
