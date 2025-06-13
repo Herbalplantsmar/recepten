@@ -35,7 +35,7 @@ header {
   display: flex;
   align-items: center;
 }
-
+/* === menustructuur === */
 .main-nav ul {
   list-style: none;
   display: flex;
@@ -43,7 +43,7 @@ header {
   margin: 0;
   padding: 0;
 }
-
+/* === stijl van menu === */
 .main-nav li a {
   text-decoration: none;
   color: #333;
@@ -51,11 +51,9 @@ header {
   font-size: 16px;
   transition: color 0.3s ease;
 }
-
 .main-nav li a:hover {
   color: #006600;
 }
-
 /* Zoekveld rechts in de balk */
 .main-nav input[type="text"] {
   font-family: Garamond;
@@ -66,8 +64,7 @@ header {
   width: 150px;
   text-align: center;
 }
-
-/* Responsive navigatie */
+/* Responsive navigatie (mobiel) */
 @media (max-width: 768px) {
   .main-nav {
     flex-direction: column;
@@ -97,7 +94,6 @@ header {
   gap: 20px;
   padding: 20px;
 }
-
 .plant-item {
   display: block;
   text-align: center;
@@ -106,11 +102,9 @@ header {
   width: 200px;
   transition: transform 0.2s;
 }
-
 .plant-item:hover {
   transform: scale(1.05);
 }
-
 .plant-item img {
   width: 100%;
   max-width: 600px;
@@ -118,11 +112,9 @@ header {
   object-fit: cover;
   border-radius: 1px;
 }
-
 .plant-item p {
   margin: 10px 0 0;
 }
-
 @media (max-width: 600px) {
   .plant-gallery {
     flex-direction: column;
