@@ -34,22 +34,26 @@ vinden, plukken, eten, gebruiken in thee: bron van vitamine C.`,
     name: "Paardenbloem",
     latin: "Taraxacum officinale",
     image: "Afbeeldingen/IMG_7283.jpg",
-    recipe: "Gebruik de bloemen voor siroop of de bladeren in salade.",
+    recipe: "ingrediënten voor 1 portie: bos (volle hand) paardenbloemblad, 1 el wittewijnazijn, 2 uien, 2 knoflooktenen, handje walnoten, handje cranberries, veel olijfolie (+ eventueel klontje boter), gegrilde pompoen uit de oven (denk dat voorgekookte bietjes ook erg goed samengaan), zout, peper, gorgonzola, portie gekookte quinoa voor erbij.
+
+- Was het paardenbloemblad en breng aan de kook in pannetje water met een goede schep zout en de wittewijnazijn. Laat 10 minuten zachtjes koken totdat het goed zacht is. Giet af, druk goed uit in een zeef. Doe in een kommetje met (kruiden) olie, zout en peper om het alvast wat extra smaak te geven.
+- Snij ondertussen de ui in halve ringen en de knoflook fijn, smoor dit in een koekenpan met royaal olie totdat het goed begint te karameliseren (minstens 15 minuten). Voeg de gekookte, gemarineerde paardenstekken toe en bak op hoog vuur in de koekenpan. Voeg de walnoten toe zodat deze ook lekker knapperig kunnen worden. Voeg na ongeveer 5 minuten de pompoen en cranberries toe en breng op smaak met peper en zout.
+- Verdeel stukjes gorgonzola over de warme pompoen zodat deze een beetje smelt. Verdeel over de quinoa (rijst of ander graan) op je bord en eet smakelijk van deze oer Europese lekkernij!",
     info: "Een van de meest herkenbare eetbare wilde planten."
   },
   veldkers: {
     name: "Veldkers",
     latin: "Cardamine hirsuta",
     image: "Afbeeldingen/plant2.jpg",
-    recipe: "Combineer de jonge bladeren met walnoten en honing in een groene smoothie.",
-    info: "De hazelaar is een veelvoorkomende struik in Europa met eetbare noten."
+    recipe: "De veldkers die ik vandaag tegen kwam was flink groot! Het smaakt licht pittig (tuinkers, waterkers, rucola) met een knapperige textuur, ik maakte een pesto en azukibonen-veldkers burgers. Rauw tussen je boterham, door je (roer)ei, omelet is ook erg fijn.",
+    info: "een sterk bijna overal groeiend plantje, veelzijdig in de keuken, wel even wat gepriegel met de blaadjes.  "
   },
   hazelaar: {
     name: "Hazelaar",
     latin: "Corylus avellana",
     image: "Afbeeldingen/plant1.jpg",
-    recipe: "Combineer de jonge bladeren met walnoten en honing in een groene smoothie.",
-    info: "De hazelaar is een veelvoorkomende struik in Europa met eetbare noten."
+    recipe: "Corylus avellana L., de Hazelaar, de boom waarvan hazelnoten komen in de herfst! Hebben jullie de felgele katjes al zien hangen? Deze kan je eten (evenals blad en dus de noot), rauw of gedroogd, als thee of in chocola. Dat laatste is verassend lekker: luchtig, knapperig, bijna noot of rijstachtig van smaak in combinatie met (pure) chocola! Ook het drogen en meel malen, om andere melen mee te verrijken is een optie. ",
+    info: "Er is nauwelijks informatie over de voedingswaarde te vinden, maar door de grote hoeveelheid stuifmeel zou het een bron van eiwitten moeten zijn (+ vitaminen & spoorelementen). Deze felgele, vrolijke slierten zijn de mannelijke katjes, die vlak bloeien voordat aan dezelfde boom ook de vrouwelijke bloemachtige katjes ontstaan. De hazelnoot is dus eenhuizig, man en vrouw in één :)."
   },
  vijg: {
     name: "Vijg",
