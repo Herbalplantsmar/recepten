@@ -70,14 +70,12 @@ header {
     flex-direction: column;
     align-items: stretch;
   }
-
   .main-nav ul {
     flex-direction: column;
     gap: 10px;
     align-items: center;
     margin-bottom: 10px;
   }
-
   .main-nav input[type="text"] {
     width: 90%;
     margin: 10px auto 0;
@@ -120,6 +118,25 @@ header {
     flex-direction: column;
     padding: 10px;
   }
+  .plant-container {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  text-align: left;
+}
+
+#plant-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-bottom: 20px;
+}
+
+#plant-recipe,
+#plant-info {
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
   /* === DINERFOTO'S SCHERMBREED === */
 .dinerfoto {
   width: 100%;
