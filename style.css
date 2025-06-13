@@ -120,6 +120,14 @@ header {
     flex-direction: column;
     padding: 10px;
   }
+  /* === DINERFOTO'S SCHERMBREED === */
+.dinerfoto {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin-bottom: 20px;
+}
 
   h1 {
     font-size: 28px;
