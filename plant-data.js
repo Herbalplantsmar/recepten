@@ -9,6 +9,10 @@ const plantDatabase = {
     info: `Het blad en de bloemen zijn eetbaar rauw of gekookt. Het blad is goed te herkennen, 
     maar de bloemen lijken erg op vele andere schermbloemigen, 
     let daarbij goed op dat je niet per ongeluk een andere schermbloem eet die giftig is.`
+    images: [ "Afbeeldingen/zevenblad1.jpg",
+    "Afbeeldingen/zevenblad2.jpg",
+    "Afbeeldingen/zevenblad3.jpg",
+    "Afbeeldingen/zevenblad4.jpg"]
   },
   pimpernel: {
     name: "Kleine pimpernel",
@@ -60,8 +64,17 @@ vinden, plukken, eten, gebruiken in thee: bron van vitamine C.`,
     name: "Hazelaar",
     latin: "Corylus avellana",
     image: "Afbeeldingen/plant1.jpg",
-    recipe: "Corylus avellana L., de Hazelaar, de boom waarvan hazelnoten komen in de herfst! Hebben jullie de felgele katjes al zien hangen? Deze kan je eten (evenals blad en dus de noot), rauw of gedroogd, als thee of in chocola. Dat laatste is verassend lekker: luchtig, knapperig, bijna noot of rijstachtig van smaak in combinatie met (pure) chocola! Ook het drogen en meel malen, om andere melen mee te verrijken is een optie. ",
-    info: "Er is nauwelijks informatie over de voedingswaarde te vinden, maar door de grote hoeveelheid stuifmeel zou het een bron van eiwitten moeten zijn (+ vitaminen & spoorelementen). Deze felgele, vrolijke slierten zijn de mannelijke katjes, die vlak bloeien voordat aan dezelfde boom ook de vrouwelijke bloemachtige katjes ontstaan. De hazelnoot is dus eenhuizig, man en vrouw in één :)."
+    recipe: `Corylus avellana L., de Hazelaar, de boom waarvan hazelnoten komen in de herfst! Hebben jullie de felgele katjes al zien hangen? 
+    Deze kan je eten (evenals blad en dus de noot), rauw of gedroogd, als thee of in chocola. Dat laatste is verassend lekker: 
+    luchtig, knapperig, bijna noot of rijstachtig van smaak in combinatie met (pure) chocola! Ook het drogen en meel malen, 
+    om andere melen mee te verrijken is een optie.`,
+    info: `Er is nauwelijks informatie over de voedingswaarde te vinden, maar door de grote hoeveelheid stuifmeel zou het een bron van eiwitten moeten zijn
+    (+ vitaminen & spoorelementen). Deze felgele, vrolijke slierten zijn de mannelijke katjes, die vlak bloeien voordat aan dezelfde boom ook de vrouwelijke bloemachtige katjes ontstaan. 
+    De hazelnoot is dus eenhuizig, man en vrouw in één :).`
+    images: [ "Afbeeldingen/zevenblad1.jpg",
+    "Afbeeldingen/hazelaar1.jpeg",
+    "Afbeeldingen/hazelaar2.jpeg",
+    "Afbeeldingen/hazelaar3.jpeg"]
   },
  vijg: {
     name: "Vijg",
