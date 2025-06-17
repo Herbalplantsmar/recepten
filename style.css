@@ -141,7 +141,7 @@ header {
   /* === DINERFOTO'S SCHERMBREED === */
 .dinerfoto {
   width: 30%;
-  max-width: 100%;
+  max-width: 30%;
   height: auto;
   display: block;
   margin-bottom: 20px;
