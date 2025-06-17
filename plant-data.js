@@ -8,7 +8,7 @@ const plantDatabase = {
     of gekookt als groenten in zout water met daarna een klontje boter erbij`,
     info: `Het blad en de bloemen zijn eetbaar rauw of gekookt. Het blad is goed te herkennen, 
     maar de bloemen lijken erg op vele andere schermbloemigen, 
-    let daarbij goed op dat je niet per ongeluk een andere schermbloem eet die giftig is.`
+    let daarbij goed op dat je niet per ongeluk een andere schermbloem eet die giftig is.`,
     images: [ "Afbeeldingen/zevenblad1.jpg",
     "Afbeeldingen/zevenblad2.jpg",
     "Afbeeldingen/zevenblad3.jpg",
@@ -70,7 +70,7 @@ vinden, plukken, eten, gebruiken in thee: bron van vitamine C.`,
     om andere melen mee te verrijken is een optie.`,
     info: `Er is nauwelijks informatie over de voedingswaarde te vinden, maar door de grote hoeveelheid stuifmeel zou het een bron van eiwitten moeten zijn
     (+ vitaminen & spoorelementen). Deze felgele, vrolijke slierten zijn de mannelijke katjes, die vlak bloeien voordat aan dezelfde boom ook de vrouwelijke bloemachtige katjes ontstaan. 
-    De hazelnoot is dus eenhuizig, man en vrouw in één :).`
+    De hazelnoot is dus eenhuizig, man en vrouw in één :).`,
     images: [ "Afbeeldingen/zevenblad1.jpg",
     "Afbeeldingen/hazelaar1.jpeg",
     "Afbeeldingen/hazelaar2.jpeg",
