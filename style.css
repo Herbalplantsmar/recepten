@@ -42,6 +42,7 @@ header {
   gap: 30px;
   margin: 0;
   padding: 0;
+  text-align: center;
 }
 /* === stijl van menu === */
 .main-nav li a {
