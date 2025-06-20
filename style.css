@@ -81,6 +81,18 @@ header {
     width: 90%;
     margin: 10px auto 0;
   }
+  .gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* centrering op mobiel */
+    gap: 10px; /* optioneel */
+  }
+
+  .gallery img {
+    max-width: 90%;
+    height: auto;
+    display: block;
+  }
 }
 
 /* Plantengalerij */
