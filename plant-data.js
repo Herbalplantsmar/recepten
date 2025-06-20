@@ -3,6 +3,7 @@ const plantDatabase = {
     name: "Zevenblad",
     latin: "Aegopodium podagraria",
     image: "Afbeeldingen/IMG_Zevenblad.jpeg",
+    title: 
     recipe: `Zevenblad is heel veelzijdig. Het heeft een kruidige, zilte smaak zonder bitter zoals de meeste wilde planten wel hebben. 
     Het leent zich goed voor soepen, omeletten, lasagna's, pesto's, door de roerbak 
     of gekookt als groenten in zout water met daarna een klontje boter erbij`,
@@ -46,6 +47,7 @@ vinden, plukken, eten, gebruiken in thee: bron van vitamine C.`,
     name: "Paardenbloem",
     latin: "Taraxacum officinale",
     image: "Afbeeldingen/IMG_7283.jpg",
+    title: "Ingelegde Paardenbloem met quinoa pomoen salade",
     recipe:`Ingrediënten voor 1 portie: 
     bos (volle hand) paardenbloemblad 
     1 el wittewijnazijn 
