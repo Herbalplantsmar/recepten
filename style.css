@@ -126,6 +126,17 @@ header {
 .plant-item p {
   margin: 10px 0 0;
 }
+#plant-image {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+  border-radius: 6px;
+  object-fit: contain;
+}
+
+}
 @media (max-width: 600px) {
   .plant-gallery {
     flex-direction: column;
