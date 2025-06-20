@@ -71,7 +71,7 @@ vinden, plukken, eten, gebruiken in thee: bron van vitamine C.`,
     info: `Er is nauwelijks informatie over de voedingswaarde te vinden, maar door de grote hoeveelheid stuifmeel zou het een bron van eiwitten moeten zijn
     (+ vitaminen & spoorelementen). Deze felgele, vrolijke slierten zijn de mannelijke katjes, die vlak bloeien voordat aan dezelfde boom ook de vrouwelijke bloemachtige katjes ontstaan. 
     De hazelnoot is dus eenhuizig, man en vrouw in één :).`,
-    images: [ "Afbeeldingen/zevenblad1.jpg",
+    images: [
     "Afbeeldingen/hazelaar1.jpeg",
     "Afbeeldingen/hazelaar2.jpeg",
     "Afbeeldingen/hazelaar3.jpeg"]
