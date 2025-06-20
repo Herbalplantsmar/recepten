@@ -170,6 +170,12 @@ header {
   margin-bottom: 20px;
 }
 
+@media (max-width: 768px) {
+  .dinerfoto {
+    width: 100%;
+    max-width: 100%;
+  }
+
   h1 {
     font-size: 28px;
   }
