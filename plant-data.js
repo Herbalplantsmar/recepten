@@ -30,7 +30,7 @@ const plantDatabase = {
     name: "Grove den",
     latin: "Pinus sylvestris",
     image: "Afbeeldingen/pinussylvestris1.jpeg",
-    recipe: `Muglio - Dennenappel siroop uit Noord-Italie <br> 
+    recipe: `Muglio - Dennenappel siroop uit Noord-Italie
 In dit geval met de jonge appels van de Grove Den (Pinus sylvestris). Het hele aroma rond deze boom is fantastisch en de dennennaalden kan je het hele jaar door 
 vinden, plukken, eten, gebruiken in thee: bron van vitamine C.`,
     info: "De grove den is een inheemse boom met geneeskrachtige eigenschappen."
