@@ -3,7 +3,6 @@ const plantDatabase = {
     name: "Zevenblad",
     latin: "Aegopodium podagraria",
     image: "Afbeeldingen/IMG_Zevenblad.jpeg",
-    title: 
     recipe: `Zevenblad is heel veelzijdig. Het heeft een kruidige, zilte smaak zonder bitter zoals de meeste wilde planten wel hebben. 
     Het leent zich goed voor soepen, omeletten, lasagna's, pesto's, door de roerbak 
     of gekookt als groenten in zout water met daarna een klontje boter erbij`,
