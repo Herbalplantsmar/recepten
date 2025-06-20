@@ -46,11 +46,28 @@ vinden, plukken, eten, gebruiken in thee: bron van vitamine C.`,
     name: "Paardenbloem",
     latin: "Taraxacum officinale",
     image: "Afbeeldingen/IMG_7283.jpg",
-    recipe:`ingrediënten voor 1 portie: bos (volle hand) paardenbloemblad, 1 el wittewijnazijn, 2 uien, 2 knoflooktenen, handje walnoten, handje cranberries, veel olijfolie (+ eventueel klontje boter), gegrilde pompoen uit de oven (denk dat voorgekookte bietjes ook erg goed samengaan), zout, peper, gorgonzola, portie gekookte quinoa voor erbij.
+    recipe:`Ingrediënten voor 1 portie: 
+    bos (volle hand) paardenbloemblad 
+    1 el wittewijnazijn 
+    2 uien
+    2 knoflooktenen
+    handje walnoten
+    handje cranberries
+    veel olijfolie (+ eventueel klontje boter)
+    gegrilde pompoen uit de oven (denk dat voorgekookte bietjes ook erg goed samengaan)
+    gorgonzola
+    portie gekookte quinoa voor erbij
+    zout & peper
 
-- Was het paardenbloemblad en breng aan de kook in pannetje water met een goede schep zout en de wittewijnazijn. Laat 10 minuten zachtjes koken totdat het goed zacht is. Giet af, druk goed uit in een zeef. Doe in een kommetje met (kruiden) olie, zout en peper om het alvast wat extra smaak te geven.
-- Snij ondertussen de ui in halve ringen en de knoflook fijn, smoor dit in een koekenpan met royaal olie totdat het goed begint te karameliseren (minstens 15 minuten). Voeg de gekookte, gemarineerde paardenstekken toe en bak op hoog vuur in de koekenpan. Voeg de walnoten toe zodat deze ook lekker knapperig kunnen worden. Voeg na ongeveer 5 minuten de pompoen en cranberries toe en breng op smaak met peper en zout.
-- Verdeel stukjes gorgonzola over de warme pompoen zodat deze een beetje smelt. Verdeel over de quinoa (rijst of ander graan) op je bord en eet smakelijk van deze oer Europese lekkernij!`,
+- Was het paardenbloemblad en breng aan de kook in pannetje water met een goede schep zout en de wittewijnazijn. 
+Laat 10 minuten zachtjes koken totdat het goed zacht is. Giet af, druk goed uit in een zeef. 
+Doe in een kommetje met (kruiden) olie, zout en peper om het alvast wat extra smaak te geven.
+- Snij ondertussen de ui in halve ringen en de knoflook fijn, smoor dit in een koekenpan met royaal olie totdat 
+het goed begint te karameliseren (minstens 15 minuten). Voeg de gekookte, gemarineerde paardenstekken toe en bak
+op hoog vuur in de koekenpan. Voeg de walnoten toe zodat deze ook lekker knapperig kunnen worden. 
+Voeg na ongeveer 5 minuten de pompoen en cranberries toe en breng op smaak met peper en zout.
+- Verdeel stukjes gorgonzola over de warme pompoen zodat deze een beetje smelt. 
+Verdeel over de quinoa (rijst of ander graan) op je bord en eet smakelijk van deze oer Europese lekkernij!`,
     info: "Een van de meest herkenbare eetbare wilde planten."
   },
   veldkers: {
