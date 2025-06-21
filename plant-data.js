@@ -9,8 +9,8 @@ const plantDatabase = {
     info: `Het blad en de bloemen zijn eetbaar rauw of gekookt. Het blad is goed te herkennen, 
     maar de bloemen lijken erg op vele andere schermbloemigen, 
     let daarbij goed op dat je niet per ongeluk een andere schermbloem eet die giftig is.`,
-    images: [ "Afbeeldingen/zevenblad1.jpg",
-    "Afbeeldingen/zevenblad2.jpg",
+    images: [ "Afbeeldingen/zevenblad1.jpeg",
+    "Afbeeldingen/zevenblad2.jpeg",
     "Afbeeldingen/zevenblad3.jpg",
     "Afbeeldingen/zevenblad4.jpg"]
   },
