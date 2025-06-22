@@ -1,4 +1,28 @@
 const plantDatabase = {
+  
+    heermoes: {
+    name: "Heermoes",
+    latin: "Equisetum arvense",
+    image: "Afbeeldingen/Heermoes.jpeg",
+    recipe: `Het verse of gedroogde kruid gebruiken voor een gezonde thee, die erg gezond is voor de botten, bindweefsel, haar en tanden :). 
+    Om meer mineralen (silicium en kiezelzuur) uit de plant te onttrekken is het goed om eerst een half uur in koud water te weken en daarna
+    5 minuten te koken of meteen in de pan te doen en minstens 15 minuten laten doorkoken.
+    
+    Een superfood poeder van de gedroogde plant malen en toevoegen aan smoothies en sapjes voor extra mineralen is ook een goede manier van verwerken!
+    
+    Voor langere tijd rauw eten wordt afgeraden, vanwege thiaminase (breekt B1 af, belangrijk voor het zenuwstelsel).
+    `,
+    info: `Synoniemen zijn paardenstaart of kattenstaart. De plant is onwijs sterk en groeit dan ook makkelijk op erg vervuilde plaatsen. 
+    Het slaat bijvoorbeeld zware metalen op in z'n weefsel, dus bij verontreinigd gebied beter niet eten. 
+    
+    LET OP: Heermoes heeft een heel giftig broertje: Lidrus (Equisetum palustre). Heermoes, dus de goede variant, is te herkennen aan dat het eerste lid
+    van de zijtakjes langer is dan de bijbehorende stengelschede (bij lidrus is dit andersom)`,
+    images: [ "Afbeeldingen/heermoes1.jpeg",
+    "Afbeeldingen/zevenblad2.jpeg",
+    "Afbeeldingen/zevenblad3.jpg",
+    "Afbeeldingen/zevenblad4.jpg"]
+  },
+  
   zevenblad: {
     name: "Zevenblad",
     latin: "Aegopodium podagraria",
