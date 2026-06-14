@@ -238,7 +238,7 @@
     if (document.querySelector(".theme-fab")) return;
 
     const panel = el("aside", { class: "theme-panel", hidden: "", role: "dialog", "aria-label": "Stijl van de website aanpassen" });
-    panel.appendChild(el("h2", null, "🎨 Stijl uitproberen"));
+    panel.appendChild(el("h2", null, "Stijl uitproberen"));
     panel.appendChild(el("p", { class: "tp-sub" },
       "Kies een sfeer, of stel kleuren, tint en lettertypen los in. De pagina verandert direct mee; je keuze wordt onthouden op dit apparaat."));
 
@@ -339,12 +339,13 @@
 
     const fab = el("button", {
       class: "theme-fab", type: "button", title: "Stijl aanpassen", "aria-label": "Stijl aanpassen", "aria-expanded": "false",
+      // tekstknop i.p.v. emoji
       onclick: () => {
         const opening = panel.hasAttribute("hidden");
         if (opening) { panel.removeAttribute("hidden"); fab.setAttribute("aria-expanded", "true"); refresh(); }
         else { panel.setAttribute("hidden", ""); fab.setAttribute("aria-expanded", "false"); }
       },
-    }, "🎨");
+    }, "Stijl");
 
     refresh();
     document.body.appendChild(panel);
@@ -353,50 +354,45 @@
 
   // ---------- shared chrome (nav + footer) ----------
   function buildHeader(page) {
+    const isHome = page === "home";
+    const header = document.getElementById("site-header") || el("header", { id: "site-header" });
+    if (!header.parentNode) document.body.insertBefore(header, document.body.firstChild);
+
+    // De home heeft géén bovenbalk: de fotobanner staat full-bleed bovenaan en
+    // de tegels eronder vormen de navigatie. (Zoeken zit in de planten-sectie.)
+    if (isHome) { header.className = ""; header.innerHTML = ""; return {}; }
+
+    // Overige pagina's (detail, losse galerijen) houden een balk om terug naar
+    // de home-secties te navigeren.
     const links = [
-      ["index.html", "Planten", "index"],
-      ["recepten.html", "Recepten", "recepten"],
-      ["seizoen.html", "Dit seizoen", "seizoen"],
-      ["projecten.html", "Projecten", "projecten"],
-      ["over.html", "Over", "over"],
+      ["index.html#planten", "Planten", "planten"],
+      ["index.html#recepten", "Recepten", "recepten"],
+      ["index.html#seizoen", "Dit seizoen", "seizoen"],
+      ["index.html#projecten", "Projecten", "projecten"],
     ];
+    const pageActive = { plant: "planten", recepten: "recepten", seizoen: "seizoen", projecten: "projecten" }[page] || "";
     const ul = el("ul", { class: "nav-links" },
       links.map(([href, label, key]) =>
-        el("li", null, el("a", { href, class: page === key ? "active" : "" }, label))));
-    const search = el("input", {
-      type: "text", class: "nav-search", id: "nav-search",
-      placeholder: "Zoek plant…", "aria-label": "Zoek plant",
-    });
-    // De index toont de naam groot in de hero eronder. Om "HERBALPLANTSMAR"
-    // niet twee keer te tonen, krijgt de balk daar alleen een klein blad-merk;
-    // de balk versmelt dan met de hero tot één bovenste blok (.on-hero).
-    const onHero = page === "index";
-    const brand = onHero
-      ? el("a", { href: "index.html", class: "nav-brand nav-brand--mark", "aria-label": "HerbalPlantsMar — home", html: "🌿" })
-      : el("a", { href: "index.html", class: "nav-brand", html: "HERBAL<span>PLANTS</span>MAR" });
-    const inner = el("div", { class: "nav-inner" }, [brand, ul, search]);
-    const header = document.getElementById("site-header") || el("header", { id: "site-header" });
-    header.className = "site-header" + (onHero ? " on-hero" : "");
+        el("li", null, el("a", { href, "data-nav": key, class: key === pageActive ? "active" : "" }, label))));
+    const brand = el("a", { href: "index.html", class: "nav-brand", html: "HERBAL<span>PLANTS</span>MAR" });
+    header.className = "site-header";
     header.innerHTML = "";
-    header.appendChild(inner);
-    if (!header.parentNode) document.body.insertBefore(header, document.body.firstChild);
-    // search only active on the gallery page
-    if (page !== "index") search.style.display = "none";
-    return { search };
+    header.appendChild(el("div", { class: "nav-inner" }, [brand, ul]));
+    return {};
   }
 
   function buildFooter() {
     const f = document.getElementById("site-footer") || el("footer", { id: "site-footer" });
     f.className = "site-footer";
     f.innerHTML =
-      "🌿 <strong>HerbalPlantsMar</strong> — wilde & kruidige planten, recepten en seizoen.<br>" +
+      "<strong>HerbalPlantsMar</strong> — wilde & kruidige planten, recepten en seizoen.<br>" +
       "Eet nooit een plant zonder 100% zekere determinatie. Informatie op deze site is educatief, geen medisch advies.";
     if (!f.parentNode) document.body.appendChild(f);
   }
 
   function safetyBanner(text) {
     return el("div", { class: "safety", html:
-      "⚠️ <strong>Let op:</strong> " + text });
+      "<strong>Let op:</strong> " + text });
   }
 
   // ---------- data ----------
@@ -416,12 +412,6 @@
 
   function chip(text, cls) { return el("span", { class: "chip " + (cls || "") }, text); }
 
-  // weinig kaarten? markeer het grid zodat CSS ze wat breder/gecentreerd toont
-  function fitGrid(grid, n) {
-    grid.classList.toggle("cols-1", n === 1);
-    grid.classList.toggle("cols-2", n === 2);
-  }
-
   // wrap matched substring of `text` in <mark>; returns a DOM fragment
   function highlight(text, q) {
     text = text || "";
@@ -437,7 +427,7 @@
   }
   function draftBadge(status) {
     return status === "verified"
-      ? el("span", { class: "badge-verified", text: "✓ gecontroleerd" })
+      ? el("span", { class: "badge-verified", text: "gecontroleerd" })
       : el("span", { class: "badge-draft", text: "concept — nog controleren" });
   }
 
@@ -479,11 +469,108 @@
   }
 
   // ===================================================================
+  // PAGE: home — één pagina: fotobanner + tegelkeuze, secties laden
+  // in-place in #app (geen herladen). Sectie volgt uit location.hash,
+  // dus deep-links (index.html#recepten) en de nav-balk werken mee.
+  // ===================================================================
+  function renderHome(plants, recipes, ctx) {
+    const app = document.getElementById("app");
+    app.innerHTML = "";
+
+    const TILES = [
+      { key: "planten",   label: "Planten",     sub: "Wat je vindt & wat je ermee kunt" },
+      { key: "recepten",  label: "Recepten",    sub: "Koken met je oogst" },
+      { key: "seizoen",   label: "Dit seizoen", sub: "Wat je nu kunt oogsten" },
+      { key: "projecten", label: "Projecten",   sub: "Wandelingen & workshops" },
+    ];
+    const VALID = new Set(TILES.map((t) => t.key));
+
+    // tegelrij — staat tussen de banner en de sectie-inhoud (vóór #app)
+    const tiles = el("nav", { class: "home-tiles", "aria-label": "Kies een onderdeel" },
+      TILES.map((t) => el("a", {
+        class: "home-tile", href: "#" + t.key, "data-tile": t.key,
+        onclick: (e) => { e.preventDefault(); navTo(t.key); },
+      }, [
+        el("span", { class: "ht-label" }, t.label),
+        el("span", { class: "ht-sub" }, t.sub),
+      ])));
+    app.parentNode.insertBefore(tiles, app);
+
+    function setActive(key) {
+      tiles.querySelectorAll(".home-tile").forEach((a) =>
+        a.classList.toggle("active", a.getAttribute("data-tile") === key));
+      document.querySelectorAll(".nav-links a[data-nav]").forEach((a) =>
+        a.classList.toggle("active", a.getAttribute("data-nav") === key));
+    }
+
+    // Projecten staat als statische opmaak in projecten.html; haal die op en
+    // toon de inhoud in-place (één bron, geen kopie in JS). Resultaat wordt
+    // gecachet zodat herhaald openen direct gaat.
+    let projectenCache = null;
+    async function fetchProjecten() {
+      if (projectenCache != null) return projectenCache;
+      const res = await fetch("projecten.html", { cache: "no-cache" });
+      const doc = new DOMParser().parseFromString(await res.text(), "text/html");
+      const src = doc.getElementById("app");
+      projectenCache = src ? src.innerHTML : "";
+      return projectenCache;
+    }
+    // Belangrijk: #app pas vervangen als de inhoud klaar is — NIET eerst legen.
+    // Anders klapt de pagina in (springt naar boven) en scrollt 'ie daarna pas
+    // weer omlaag. De oude sectie blijft staan tot projecten geladen is.
+    async function renderProjecten() {
+      let html;
+      try { html = await fetchProjecten(); }
+      catch (e) { html = null; }
+      app.innerHTML = html ? html : "<div class='empty'>Kon projecten niet laden.</div>";
+    }
+
+    function render(key) {
+      if (key === "planten") renderIndex(plants, ctx);
+      else if (key === "recepten") renderRecepten(plants, recipes);
+      else if (key === "seizoen") renderSeizoen(plants, recipes);
+      else if (key === "projecten") return renderProjecten(); // async → promise
+    }
+
+    function apply(key, scroll) {
+      setActive(key);
+      // scroll pas ná render (projecten laadt async; anders scrollt 'ie te vroeg)
+      Promise.resolve(render(key)).then(() => {
+        if (scroll) tiles.scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+    }
+
+    function clearSection() {
+      setActive(null);
+      app.innerHTML = "";
+    }
+
+    // hash = enige bron van waarheid; klik zet hash → hashchange → fromHash
+    function navTo(key) {
+      if (location.hash === "#" + key) apply(key, true); // zelfde sectie opnieuw: scroll erheen
+      else location.hash = key;
+    }
+    function fromHash(scroll) {
+      const key = (location.hash || "").replace(/^#/, "");
+      if (VALID.has(key)) apply(key, scroll);
+      else clearSection();
+    }
+
+    window.addEventListener("hashchange", () => fromHash(true));
+    fromHash(false); // begintoestand: geen sprong/scroll bij laden
+  }
+
+  // ===================================================================
   // PAGE: index (gallery + search + filters)
   // ===================================================================
   function renderIndex(plants, ctx) {
     const root = document.getElementById("app");
     root.innerHTML = "";
+
+    // volgorde: alfabetisch op NL naam; planten zonder afbeelding achteraan
+    const heeftFoto = (p) => !!(p.afbeelding && p.afbeelding.trim());
+    plants = [...plants].sort((a, b) =>
+      (heeftFoto(b) - heeftFoto(a)) || a.naam.localeCompare(b.naam, "nl"));
 
     // filter state
     const state = { q: "", locatie: null, deel: null, seizoen: null };
@@ -510,27 +597,44 @@
       return true;
     }
 
+    // Bouw elke kaart één keer en hergebruik 'm. Filteren/zoeken toont of
+    // verbergt kaarten en hermarkeert de tekst in-place — geen innerHTML-reset,
+    // dus afbeeldingen herladen niet en het zoeken voelt vloeiend i.p.v. schokkerig.
+    const cards = plants.map((p) => {
+      const h3 = el("h3");
+      const latin = el("span", { class: "latin" });
+      const reason = el("div", { class: "match-reason" });
+      reason.hidden = true;
+      const card = el("a", { class: "card", href: "plant.html?plant=" + encodeURIComponent(p.id) }, [
+        el("div", { class: "card-media" }, img(p.afbeelding, p.naam, p.naam)),
+        el("div", { class: "card-body card-body--center" }, [h3, latin, reason]),
+      ]);
+      grid.appendChild(card);
+      return { p, card, h3, latin, reason };
+    });
+    const emptyMsg = el("div", { class: "empty" }, "Geen planten gevonden.");
+    emptyMsg.hidden = true;
+    grid.appendChild(emptyMsg);
+
+    function setHL(node, text, q) { node.textContent = ""; node.appendChild(highlight(text, q)); }
+
     function draw() {
-      grid.innerHTML = "";
-      const list = plants.filter(matches);
-      fitGrid(grid, list.length);
-      if (!list.length) { grid.appendChild(el("div", { class: "empty" }, "Geen planten gevonden.")); return; }
       const q = state.q.trim();
       const ql = q.toLowerCase();
-      list.forEach((p) => {
-        const inName = q && (p.naam.toLowerCase().includes(ql) || p.latijn.toLowerCase().includes(ql));
-        const matchFamilie = q && !inName && (p.familie || "").toLowerCase().includes(ql);
-        const body = [
-          el("h3", null, highlight(p.naam, q)),
-          el("span", { class: "latin" }, highlight(p.latijn, q)),
-        ];
-        if (matchFamilie) body.push(el("div", { class: "match-reason" }, ["↳ Familie: ", highlight(p.familie, q)]));
-        const card = el("a", { class: "card", href: "plant.html?plant=" + encodeURIComponent(p.id) }, [
-          el("div", { class: "card-media" }, img(p.afbeelding, p.naam, p.naam)),
-          el("div", { class: "card-body card-body--center" }, body),
-        ]);
-        grid.appendChild(card);
+      let n = 0;
+      cards.forEach((c) => {
+        const show = matches(c.p);
+        c.card.hidden = !show;
+        if (!show) return;
+        n++;
+        setHL(c.h3, c.p.naam, q);
+        setHL(c.latin, c.p.latijn, q);
+        const inName = q && (c.p.naam.toLowerCase().includes(ql) || c.p.latijn.toLowerCase().includes(ql));
+        const matchFamilie = q && !inName && (c.p.familie || "").toLowerCase().includes(ql);
+        c.reason.hidden = !matchFamilie;
+        if (matchFamilie) { c.reason.textContent = "↳ Familie: "; c.reason.appendChild(highlight(c.p.familie, q)); }
       });
+      emptyMsg.hidden = n > 0;
     }
 
     // filter UI — chip-groepen in het inklapbare paneel
@@ -582,15 +686,19 @@
       el("div", { class: "filter-panel-head" }, [el("span", { class: "filter-heading" }, "Verfijnen"), clearBtn]),
       el("div", { class: "filter-panel-inner" }, [gLoc.node, gDeel.node, gSeiz.node]),
     ]);
+    // zoekveld hoort bij de planten-galerij zelf (staat links in de filter-balk)
+    const searchInput = el("input", {
+      type: "search", class: "plant-search", placeholder: "Zoek plant…",
+      "aria-label": "Zoek plant", value: state.q,
+    });
+    searchInput.oninput = function () { state.q = this.value; draw(); };
+
     root.appendChild(el("div", { class: "container" }, [
-      el("div", { class: "filter-bar" }, toggleBtn),
+      el("div", { class: "filter-bar" }, [searchInput, toggleBtn]),
       panel,
       grid,
     ]));
     draw();
-
-    // wire search box in nav
-    if (ctx.search) ctx.search.addEventListener("input", function () { state.q = this.value; draw(); });
   }
 
   // ===================================================================
@@ -612,7 +720,7 @@
     if (!p) {
       root.appendChild(el("div", { class: "detail" }, [
         el("h1", null, "Plant niet gevonden"),
-        el("a", { class: "back-link", href: "index.html" }, "← Terug naar overzicht"),
+        el("a", { class: "back-link", href: "index.html#planten" }, "← Terug naar overzicht"),
       ]));
       document.title = "Plant niet gevonden — HerbalPlantsMar";
       return;
@@ -703,7 +811,7 @@
         const list = el("div", { class: "lookalike-list" });
         gv.forEach((l) => {
           const badge = l.giftig
-            ? el("span", { class: "badge-giftig" }, "⚠ giftig")
+            ? el("span", { class: "badge-giftig" }, "giftig")
             : el("span", { class: "badge-veilig" }, "niet giftig");
           list.appendChild(el("div", { class: "lookalike" + (l.giftig ? " danger" : "") }, [
             el("div", { class: "lookalike-head" }, [
@@ -747,7 +855,7 @@
       ]));
     }
 
-    wrap.appendChild(el("a", { class: "back-link", href: "index.html" }, "← Terug naar overzicht"));
+    wrap.appendChild(el("a", { class: "back-link", href: "index.html#planten" }, "← Terug naar overzicht"));
     root.appendChild(wrap);
   }
 
@@ -782,10 +890,12 @@
 
     // zelfde tegel-format als de planten: foto + titel, 3 naast elkaar
     const grid = el("div", { class: "grid" });
+    // zelfde ordening als de planten: op titel (NL), recepten zonder foto achteraan
+    const heeftFoto = (r) => { const f = receptFoto(r, map); return !!(f && f.trim()); };
     function draw() {
       grid.innerHTML = "";
-      const list = (recipes || []).filter((r) => !state.seizoen || (r.seizoenen || []).includes(state.seizoen));
-      fitGrid(grid, list.length);
+      const list = (recipes || []).filter((r) => !state.seizoen || (r.seizoenen || []).includes(state.seizoen))
+        .sort((a, b) => (heeftFoto(b) - heeftFoto(a)) || a.titel.localeCompare(b.titel, "nl"));
       if (!list.length) { grid.appendChild(el("div", { class: "empty" }, "Geen recepten voor dit seizoen.")); return; }
       list.forEach((r) => {
         const chips = (r.seizoenen || []).map((s) => chip(SEIZOENEN[s] ? SEIZOENEN[s].label : s, "season"));
@@ -813,7 +923,7 @@
     if (!r) {
       root.appendChild(el("div", { class: "detail" }, [
         el("h1", null, "Recept niet gevonden"),
-        el("a", { class: "back-link", href: "recepten.html" }, "← Terug naar recepten"),
+        el("a", { class: "back-link", href: "index.html#recepten" }, "← Terug naar recepten"),
       ]));
       document.title = "Recept niet gevonden — HerbalPlantsMar";
       return;
@@ -854,7 +964,7 @@
     if (r.bron) wrap.appendChild(el("div", { class: "detail-section" },
       el("div", { class: "sources" }, "Bron: " + r.bron)));
 
-    wrap.appendChild(el("a", { class: "back-link", href: "recepten.html" }, "← Terug naar recepten"));
+    wrap.appendChild(el("a", { class: "back-link", href: "index.html#recepten" }, "← Terug naar recepten"));
     root.appendChild(wrap);
   }
 
@@ -879,21 +989,22 @@
       const delenNu = (p.seizoenskalender || []).filter((k) => (k.maanden || []).includes(m));
       if (delenNu.length) nu.push({ p, delenNu });
     });
+    // zelfde ordening als de planten-galerij: op naam (NL), zonder foto achteraan
+    const heeftFoto = (p) => !!(p.afbeelding && p.afbeelding.trim());
+    nu.sort((a, b) => (heeftFoto(b.p) - heeftFoto(a.p)) || a.p.naam.localeCompare(b.p.naam, "nl"));
 
     const grid = el("div", { class: "grid" });
     if (!nu.length) grid.appendChild(el("div", { class: "empty" }, "Nog geen seizoensdata. Voeg seizoenskalenders toe via admin."));
-    nu.forEach(({ p, delenNu }) => {
+    nu.forEach(({ p }) => {
+      // zelfde kaart als de planten-galerij: foto + naam + latijn, gecentreerd
       grid.appendChild(el("a", { class: "card", href: "plant.html?plant=" + encodeURIComponent(p.id) }, [
         el("div", { class: "card-media" }, img(p.afbeelding, p.naam, p.naam)),
-        el("div", { class: "card-body" }, [
+        el("div", { class: "card-body card-body--center" }, [
           el("h3", null, p.naam),
           el("span", { class: "latin" }, p.latijn),
-          el("div", { class: "card-chips" }, delenNu.map((k) => chip(cap(k.deel), "season"))),
-          el("div", { style: "font-size:13px;color:#6b7268;margin-top:6px" }, delenNu.map((k) => k.toepassing).filter(Boolean).join(" · ")),
         ]),
       ]));
     });
-    fitGrid(grid, nu.length);
     root.appendChild(el("div", { class: "container" }, el("h2", { class: "section-title" }, "Nu te oogsten")));
     root.appendChild(el("div", { class: "container" }, grid));
 
@@ -1020,7 +1131,8 @@
     if (app) app.appendChild(el("div", { class: "loading" }, "Laden…"));
     try {
       const { plants, recipes } = await loadData();
-      if (page === "index") renderIndex(plants, ctx);
+      if (page === "home") renderHome(plants, recipes, ctx);
+      else if (page === "index") renderIndex(plants, ctx);
       else if (page === "plant") renderPlant(plants, recipes);
       else if (page === "recepten") renderRecepten(plants, recipes);
       else if (page === "seizoen") renderSeizoen(plants, recipes);

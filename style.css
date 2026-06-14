@@ -158,22 +158,83 @@ img { max-width: 100%; display: block; }
   font-size: clamp(12.5px, 1.8vw, 15px);
 }
 
-/* Index-hero = hét grote merk-blok, versmolten met de balk erboven.
-   Eén keer "HERBALPLANTSMAR", groot en opvallend. Verticale gradient
-   start op dezelfde tint als de balk (.on-hero) → naadloos. */
+/* Home-hero = grote fotobanner (~60% schermhoogte) met donkere overlay,
+   zodat de witte titel + quote overal leesbaar blijven. */
 .hero--home {
-  background: linear-gradient(180deg, var(--mint-100), var(--mint-50) 55%, var(--cream));
-  padding: 12px 22px 36px;
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 56px 22px;
+  border-bottom: none;
+  background:
+    linear-gradient(180deg, rgba(18,38,26,.45), rgba(13,28,19,.66)),
+    url("Afbeeldingen/IMG_7709.jpg") center / cover no-repeat;
 }
 .hero--home h1 {
-  margin: 0 0 12px;
-  font-size: clamp(40px, 7.5vw, 74px);
+  margin: 0 0 14px;
+  color: #fff;
+  font-size: clamp(40px, 8.5vw, 88px);
   line-height: 1;
   letter-spacing: 2px;
+  text-shadow: 0 2px 22px rgba(0,0,0,.45);
 }
 .hero--home p {
-  max-width: 600px;
-  font-size: clamp(13px, 1.9vw, 16px);
+  max-width: 760px;
+  margin: 0 auto;
+  color: #fff;
+  font-size: clamp(18px, 2.8vw, 27px);
+  line-height: 1.4;
+  text-shadow: 0 2px 16px rgba(0,0,0,.7);
+}
+
+/* ---------- Home: sectiekeuze (tegels) ---------- */
+.home-tiles {
+  max-width: var(--maxw);
+  margin: -44px auto 8px;        /* iets over de banner heen */
+  padding: 0 22px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  position: relative;
+  z-index: 5;
+  scroll-margin-top: 72px;        /* sticky nav niet over de tegels bij scrollen */
+}
+.home-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--paper);
+  border: 1px solid rgba(var(--primary-rgb), .14);
+  box-shadow: var(--shadow-md);
+  padding: 24px 18px;
+  cursor: pointer;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.home-tile:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: rgba(var(--primary-rgb), .4);
+}
+.home-tile.active {
+  border-color: var(--green-700);
+  box-shadow: var(--shadow-lg);
+}
+.home-tile .ht-icon { font-size: 34px; line-height: 1; }
+.home-tile .ht-label { font-family: var(--serif); font-size: 28px; font-weight: 600; color: var(--green-700); line-height: 1.1; }
+.home-tile .ht-sub { font-size: 13px; color: var(--muted); line-height: 1.35; }
+@media (max-width: 820px) {
+  .home-tiles { grid-template-columns: repeat(2, 1fr); margin-top: 18px; }
+}
+@media (max-width: 460px) {
+  .home-tiles { grid-template-columns: 1fr; }
 }
 
 /* ---------- Section shell ---------- */
@@ -205,6 +266,17 @@ img { max-width: 100%; display: block; }
 
 /* ---------- Filters — standaard ingeklapt; de planten staan voorop ---------- */
 .filter-bar { display: flex; align-items: center; gap: 12px; margin: 2px 0 16px; }
+/* zoekveld van de planten-galerij — staat links, filterknop schuift naar rechts */
+.plant-search {
+  flex: 1; min-width: 0; max-width: 340px;
+  border: 1px solid rgba(var(--primary-rgb), .25);
+  background: var(--paper); color: var(--ink);
+  border-radius: 999px; padding: 9px 16px;
+  font-size: 14px; font-family: var(--sans);
+  transition: box-shadow .2s ease, border-color .2s ease;
+}
+.plant-search:focus { outline: none; border-color: var(--green-500); box-shadow: 0 0 0 3px rgba(var(--primary-mid-rgb), .18); }
+.filter-bar .filter-toggle { margin-left: auto; }
 /* Subtiel hamburger-icoontje (3 streepjes): klein en onopvallend, klik = filters
    klappen uit. Planten blijven voorop. */
 .filter-toggle {
@@ -273,21 +345,9 @@ img { max-width: 100%; display: block; }
 @media (max-width: 640px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
 @media (max-width: 400px) { .grid { grid-template-columns: 1fr; } }
 
-/* Weinig kaarten (filter/seizoen) → laat ze niet in een hoekje hangen:
-   smaller, gecentreerd grid zodat 1–2 kaarten wat breder worden.
-   Alleen op ruimere schermen; mobiel houdt de regels hierboven aan. */
-@media (min-width: 641px) {
-  .grid.cols-2 {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    max-width: 900px;
-    margin-left: auto; margin-right: auto;
-  }
-  .grid.cols-1 {
-    grid-template-columns: minmax(0, 1fr);
-    max-width: 520px;
-    margin-left: auto; margin-right: auto;
-  }
-}
+/* Kaarten houden altijd hetzelfde formaat: ook 1–2 resultaten blijven op de
+   3-koloms-raster (links uitgelijnd), niet uitrekken/centreren. */
+.card[hidden] { display: none; }
 .card {
   background: var(--paper);
   overflow: hidden;
@@ -303,9 +363,10 @@ img { max-width: 100%; display: block; }
 .card-media { aspect-ratio: 1 / 1; overflow: hidden; background: var(--mint-50); }
 .card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
 .card:hover .card-media img { transform: scale(1.06); }
-.card-body { padding: 9px 11px 12px; }
-.card-body h3 { margin: 0 0 1px; font-size: 16.5px; line-height: 1.2; }
-.card-body .latin { font-style: italic; color: var(--muted); font-size: 12.5px; }
+.card-body { padding: 11px 13px 14px; }
+.card-body h3 { margin: 0 0 2px; font-size: 21px; line-height: 1.18; }
+.card-body--center h3 { font-size: 23px; }
+.card-body .latin { font-style: italic; color: var(--muted); font-size: 13.5px; }
 .card-body--center { text-align: center; }
 .card-chips { margin-top: 7px; display: flex; flex-wrap: wrap; gap: 5px; }
 .match-reason { font-size: 12.5px; color: var(--muted); margin-top: 5px; }
@@ -371,7 +432,7 @@ mark {
 .detail { max-width: 980px; margin: 0 auto; padding: 30px 22px 70px; }
 .detail-top { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start; }
 .detail-hero img { width: 100%; border-radius: var(--radius); box-shadow: var(--shadow-md); aspect-ratio: 4/3; object-fit: cover; }
-.detail-head h1 { margin: 0 0 2px; font-size: clamp(30px, 5vw, 48px); }
+.detail-head h1 { margin: 0 0 2px; font-size: clamp(40px, 6.5vw, 64px); }
 .detail-head .latin { font-style: italic; color: var(--muted); font-size: 18px; }
 .meta-list { list-style: none; padding: 0; margin: 18px 0 0; }
 .meta-list li { padding: 8px 0; border-bottom: 1px dashed rgba(var(--primary-rgb),.18); font-size: 15px; }
@@ -542,11 +603,12 @@ mark {
   width: 54px; height: 54px; border-radius: 50%;
   border: none; cursor: pointer;
   background: var(--green-700); color: #fff;
-  font-size: 23px; line-height: 1; text-align: center;
+  font-family: var(--serif); font-size: 14px; font-weight: 600; letter-spacing: .3px;
+  line-height: 1; text-align: center;
   box-shadow: var(--shadow-md);
   transition: transform .18s ease, background .2s ease;
 }
-.theme-fab:hover { transform: scale(1.08) rotate(8deg); background: var(--green-900); }
+.theme-fab:hover { transform: scale(1.08); background: var(--green-900); }
 .theme-fab:focus-visible { outline: 3px solid rgba(var(--accent-rgb), .7); outline-offset: 2px; }
 
 .theme-panel {
