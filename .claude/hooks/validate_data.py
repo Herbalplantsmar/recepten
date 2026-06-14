@@ -7,7 +7,23 @@ and recipe->plant links that don't resolve.
 
 Exit 0 = ok (silent). Exit 2 = feed stderr back to Claude as blocking feedback.
 """
-import json, os, sys
+import json, os, re, sys
+
+_CITE = re.compile(r"\[(\d+(?:\s*,\s*\d+)*)\]")
+
+def _cite_problems(pid, n_bron, *texts):
+    """Footnote markers [n]/[n,m] in prose must reference an existing bron."""
+    out = []
+    for t in texts:
+        if not isinstance(t, str):
+            continue
+        for m in _CITE.finditer(t):
+            for num in m.group(1).split(","):
+                num = num.strip()
+                if num.isdigit() and not (1 <= int(num) <= n_bron):
+                    out.append(f"plant '{pid}': voetnoot [{num}] verwijst naar een niet-bestaande bron "
+                               f"(plant heeft {n_bron} bronnen)")
+    return out
 
 def main():
     try:
@@ -58,6 +74,20 @@ def main():
                     problems.append(f"plant '{pid}': verplicht veld '{k}' ontbreekt of leeg")
             if "giftigeVerwisseling" not in p:
                 problems.append(f"plant '{pid}': 'giftigeVerwisseling' ontbreekt")
+            # footnote markers must reference an existing bron
+            n_bron = len(p.get("bronnen") or [])
+            texts = [p.get(k) for k in ("ecosysteem", "gebruik", "info", "oogstmethode",
+                                        "wildplukGevolgen", "verwisselingIntro", "waarschuwing")]
+            for k in (p.get("seizoenskalender") or []):
+                texts.append(k.get("toepassing") if isinstance(k, dict) else None)
+            gv = p.get("giftigeVerwisseling")
+            if isinstance(gv, list):
+                for l in gv:
+                    if isinstance(l, dict):
+                        texts.append(l.get("onderscheid"))
+            elif isinstance(gv, str):
+                texts.append(gv)
+            problems.extend(_cite_problems(pid, n_bron, *texts))
         dupes = sorted({x for x in ids if ids.count(x) > 1})
         if dupes:
             problems.append(f"dubbele plant-id's: {', '.join(map(str, dupes))}")
