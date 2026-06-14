@@ -64,12 +64,300 @@
     return node;
   }
 
+  // ===================================================================
+  // STIJL-PANEEL — live thema-switcher (kleuren, accenten, lettertypen).
+  // Schrijft uitsluitend de thema-tokens in :root; keuze in localStorage.
+  // Doel: een passend thema voor de site vinden door uit te proberen.
+  // ===================================================================
+  const THEME_KEY = "hp-theme";
+
+  // token-sleutel -> CSS-variabele (allemaal R,G,B-triples)
+  const THEME_VARS = {
+    p:   "--primary-rgb",
+    pd:  "--primary-dark-rgb",
+    ac:  "--accent-rgb",
+    bg:  "--bg-rgb",
+    sf:  "--surface-rgb",
+    ink: "--ink-rgb",
+  };
+  // welke kleurkiezers tonen we (volgorde = weergave), met label
+  const THEME_SWATCHES = [
+    ["p",   "Hoofdkleur"],
+    ["ac",  "Accent"],
+    ["bg",  "Achtergrond"],
+    ["sf",  "Kaarten"],
+    ["ink", "Tekst"],
+    ["pd",  "Donkere variant"],
+  ];
+
+  const GF = "https://fonts.googleapis.com/css2?family=";
+  const FONTS_HEAD = [
+    { name: "Cormorant — klassiek", stack: '"Cormorant Garamond", Garamond, Georgia, serif', href: GF + "Cormorant+Garamond:ital,wght@0,500;0,600;1,500&display=swap" },
+    { name: "Playfair — elegant",   stack: '"Playfair Display", Georgia, serif',             href: GF + "Playfair+Display:ital,wght@0,600;1,600&display=swap" },
+    { name: "Lora — zacht schreef", stack: '"Lora", Georgia, serif',                          href: GF + "Lora:ital,wght@0,500;0,600;1,500&display=swap" },
+    { name: "Bitter — robuust",     stack: '"Bitter", Georgia, serif',                        href: GF + "Bitter:wght@600;700&display=swap" },
+    { name: "Poppins — modern",     stack: '"Poppins", system-ui, sans-serif',                href: GF + "Poppins:wght@500;600;700&display=swap" },
+    { name: "Georgia — systeem",    stack: 'Georgia, "Times New Roman", serif',               href: null },
+  ];
+  const FONTS_BODY = [
+    { name: "Segoe UI — systeem",  stack: '"Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif', href: null },
+    { name: "Inter",               stack: '"Inter", system-ui, sans-serif',         href: GF + "Inter:wght@400;600&display=swap" },
+    { name: "Source Sans",         stack: '"Source Sans 3", system-ui, sans-serif', href: GF + "Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" },
+    { name: "Nunito — zacht",      stack: '"Nunito", system-ui, sans-serif',        href: GF + "Nunito:wght@400;600;700&display=swap" },
+    { name: "Lora — schreef tekst",stack: '"Lora", Georgia, serif',                 href: GF + "Lora:ital,wght@0,400;0,600;1,400&display=swap" },
+    { name: "Georgia",             stack: 'Georgia, "Times New Roman", serif',      href: null },
+  ];
+
+  const PRESETS = [
+    { id: "bos",      name: "Bos",            t: { p:"#2c6e49", pd:"#1f4d34", ac:"#a7c957", bg:"#f7f5f0", sf:"#ffffff", ink:"#26302a" }, head:0, body:0 },
+    { id: "herfst",   name: "Herfst",         t: { p:"#8a4b2f", pd:"#5e3320", ac:"#d9a23d", bg:"#faf4ea", sf:"#fffdf9", ink:"#2e2620" }, head:2, body:2 },
+    { id: "lavendel", name: "Lavendel",       t: { p:"#6b5b95", pd:"#463c63", ac:"#b8a4d4", bg:"#f6f4fa", sf:"#ffffff", ink:"#2b2733" }, head:1, body:3 },
+    { id: "oceaan",   name: "Oceaan",         t: { p:"#1f6f78", pd:"#11464c", ac:"#5cc1c9", bg:"#eef6f6", sf:"#ffffff", ink:"#1e2b2d" }, head:3, body:1 },
+    { id: "terra",    name: "Terracotta",     t: { p:"#a8492f", pd:"#6e2c1a", ac:"#e0a96d", bg:"#fbf6f0", sf:"#fffdfa", ink:"#2c211c" }, head:4, body:2 },
+    { id: "avond",    name: "Avond (donker)", t: { p:"#3f9168", pd:"#0f1d14", ac:"#7fc69b", bg:"#161f1a", sf:"#1f2b24", ink:"#e7f0ea" }, head:0, body:1 },
+  ];
+
+  // ---- kleur-helpers ----
+  function hexToRgb(hex) {
+    const h = String(hex).replace("#", "");
+    const n = h.length === 3 ? h.split("").map((c) => c + c).join("") : h;
+    return [parseInt(n.slice(0,2),16) || 0, parseInt(n.slice(2,4),16) || 0, parseInt(n.slice(4,6),16) || 0];
+  }
+  function rgbToHex(r, g, b) {
+    const h = (v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, "0");
+    return "#" + h(r) + h(g) + h(b);
+  }
+  function rgbToTriple(rgb) { return rgb.map((v) => Math.round(v)).join(", "); }
+
+  function rgbToHsl([r, g, b]) {
+    r /= 255; g /= 255; b /= 255;
+    const max = Math.max(r,g,b), min = Math.min(r,g,b), d = max - min;
+    let h = 0; const l = (max + min) / 2;
+    const s = d === 0 ? 0 : d / (1 - Math.abs(2*l - 1));
+    if (d !== 0) {
+      if (max === r) h = ((g - b) / d) % 6;
+      else if (max === g) h = (b - r) / d + 2;
+      else h = (r - g) / d + 4;
+      h *= 60; if (h < 0) h += 360;
+    }
+    return [h, s, l];
+  }
+  function hslToRgb([h, s, l]) {
+    const c = (1 - Math.abs(2*l - 1)) * s;
+    const x = c * (1 - Math.abs(((h / 60) % 2) - 1));
+    const m = l - c/2;
+    let r=0,g=0,b=0;
+    if (h < 60) { r=c; g=x; }
+    else if (h < 120) { r=x; g=c; }
+    else if (h < 180) { g=c; b=x; }
+    else if (h < 240) { g=x; b=c; }
+    else if (h < 300) { r=x; b=c; }
+    else { r=c; b=x; }
+    return [(r+m)*255, (g+m)*255, (b+m)*255];
+  }
+  // draai de tint van een kleur met `deg` graden (verzadiging/lichtheid blijven)
+  function rotateHex(hex, deg) {
+    if (!deg) return hex;
+    const [h, s, l] = rgbToHsl(hexToRgb(hex));
+    const rgb = hslToRgb([(h + deg + 360) % 360, s, l]);
+    return rgbToHex(rgb[0], rgb[1], rgb[2]);
+  }
+  // meng kleur richting wit (t = aandeel wit, 0..1) — voor de zachte variant
+  function mixWhite(hex, t) {
+    const [r,g,b] = hexToRgb(hex);
+    return [r + (255-r)*t, g + (255-g)*t, b + (255-b)*t];
+  }
+
+  // ---- thema toepassen / bewaren ----
+  let activeTheme = null;                 // { t:{...hex}, head:idx, body:idx, hue:int, presetId }
+  const loadedFonts = new Set();
+
+  function ensureFont(font) {
+    if (!font || !font.href || loadedFonts.has(font.href)) return;
+    loadedFonts.add(font.href);
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = font.href;
+    document.head.appendChild(link);
+  }
+
+  function defaultTheme() {
+    const p = PRESETS[0];
+    return { t: Object.assign({}, p.t), head: p.head, body: p.body, hue: 0, presetId: p.id };
+  }
+
+  function applyTheme(theme) {
+    const root = document.documentElement;
+    const hue = theme.hue || 0;
+    for (const key in THEME_VARS) {
+      root.style.setProperty(THEME_VARS[key], rgbToTriple(hexToRgb(rotateHex(theme.t[key], hue))));
+    }
+    // zachte variant automatisch afleiden van de (geroteerde) hoofdkleur
+    root.style.setProperty("--primary-mid-rgb", rgbToTriple(mixWhite(rotateHex(theme.t.p, hue), 0.3)));
+    const head = FONTS_HEAD[theme.head] || FONTS_HEAD[0];
+    const body = FONTS_BODY[theme.body] || FONTS_BODY[0];
+    ensureFont(head); ensureFont(body);
+    root.style.setProperty("--serif", head.stack);
+    root.style.setProperty("--sans", body.stack);
+  }
+
+  function saveTheme(theme) {
+    try { localStorage.setItem(THEME_KEY, JSON.stringify(theme)); } catch (e) { /* private mode */ }
+  }
+  function loadTheme() {
+    try {
+      const raw = localStorage.getItem(THEME_KEY);
+      if (!raw) return defaultTheme();
+      const t = JSON.parse(raw);
+      if (!t || !t.t) return defaultTheme();
+      return Object.assign(defaultTheme(), t);
+    } catch (e) { return defaultTheme(); }
+  }
+
+  function themeCss(theme) {
+    const hue = theme.hue || 0;
+    const out = [":root {"];
+    for (const key in THEME_VARS) {
+      out.push("  " + THEME_VARS[key] + ": " + rgbToTriple(hexToRgb(rotateHex(theme.t[key], hue))) + ";");
+    }
+    out.push("  --primary-mid-rgb: " + rgbToTriple(mixWhite(rotateHex(theme.t.p, hue), 0.3)) + ";");
+    out.push("  --serif: " + (FONTS_HEAD[theme.head] || FONTS_HEAD[0]).stack + ";");
+    out.push("  --sans:  " + (FONTS_BODY[theme.body] || FONTS_BODY[0]).stack + ";");
+    out.push("}");
+    return out.join("\n");
+  }
+
+  // direct bij laden toepassen (vóór paint → geen flikkering)
+  function applySavedTheme() {
+    activeTheme = loadTheme();
+    applyTheme(activeTheme);
+  }
+  applySavedTheme();
+
+  function buildThemePanel() {
+    if (document.querySelector(".theme-fab")) return;
+
+    const panel = el("aside", { class: "theme-panel", hidden: "", role: "dialog", "aria-label": "Stijl van de website aanpassen" });
+    panel.appendChild(el("h2", null, "🎨 Stijl uitproberen"));
+    panel.appendChild(el("p", { class: "tp-sub" },
+      "Kies een sfeer, of stel kleuren, tint en lettertypen los in. De pagina verandert direct mee; je keuze wordt onthouden op dit apparaat."));
+
+    // --- presets / sfeer ---
+    const presetWrap = el("div", { class: "tp-presets" });
+    PRESETS.forEach((p) => {
+      const sw = el("span", { class: "tp-swatch" }, [
+        el("i", { style: "background:" + p.t.p }),
+        el("i", { style: "background:" + p.t.ac }),
+        el("i", { style: "background:" + p.t.bg }),
+      ]);
+      presetWrap.appendChild(el("button", {
+        class: "tp-preset" + (activeTheme.presetId === p.id ? " active" : ""),
+        type: "button", "data-preset": p.id,
+        onclick: () => {
+          activeTheme = { t: Object.assign({}, p.t), head: p.head, body: p.body, hue: 0, presetId: p.id };
+          applyTheme(activeTheme); saveTheme(activeTheme); refresh();
+        },
+      }, [sw, el("span", null, p.name)]));
+    });
+    panel.appendChild(el("div", { class: "tp-group" }, [el("span", { class: "tp-label" }, "Sfeer"), presetWrap]));
+
+    // --- losse kleuren ---
+    const colorWrap = el("div");
+    THEME_SWATCHES.forEach(([key, label]) => {
+      colorWrap.appendChild(el("div", { class: "tp-row" }, [
+        el("label", null, label),
+        el("input", {
+          type: "color", class: "tp-color", value: activeTheme.t[key], "data-key": key, "aria-label": label,
+          oninput: (e) => {
+            activeTheme.t[key] = e.target.value; activeTheme.presetId = null;
+            applyTheme(activeTheme); saveTheme(activeTheme); markActivePreset(); syncExport();
+          },
+        }),
+      ]));
+    });
+    panel.appendChild(el("div", { class: "tp-group" }, [el("span", { class: "tp-label" }, "Kleuren"), colorWrap]));
+
+    // --- tint-slider (verschuift het hele palet) ---
+    const hueInput = el("input", {
+      type: "range", class: "tp-range", min: "-180", max: "180", step: "2",
+      value: String(activeTheme.hue || 0), "aria-label": "Tint verschuiven",
+      oninput: (e) => { activeTheme.hue = parseInt(e.target.value, 10); applyTheme(activeTheme); saveTheme(activeTheme); syncExport(); },
+    });
+    panel.appendChild(el("div", { class: "tp-group" }, [
+      el("span", { class: "tp-label" }, "Tint verschuiven — heel palet"), hueInput,
+    ]));
+
+    // --- lettertypen ---
+    const headSel = el("select", {
+      class: "tp-select", "aria-label": "Lettertype koppen",
+      onchange: (e) => { activeTheme.head = parseInt(e.target.value,10); activeTheme.presetId = null; applyTheme(activeTheme); saveTheme(activeTheme); markActivePreset(); syncExport(); },
+    }, FONTS_HEAD.map((f, i) => el("option", { value: String(i) }, "Koppen: " + f.name)));
+    const bodySel = el("select", {
+      class: "tp-select", "aria-label": "Lettertype tekst",
+      onchange: (e) => { activeTheme.body = parseInt(e.target.value,10); activeTheme.presetId = null; applyTheme(activeTheme); saveTheme(activeTheme); markActivePreset(); syncExport(); },
+    }, FONTS_BODY.map((f, i) => el("option", { value: String(i) }, "Tekst: " + f.name)));
+    panel.appendChild(el("div", { class: "tp-group" }, [el("span", { class: "tp-label" }, "Lettertypen"), headSel, bodySel]));
+
+    // --- acties ---
+    const copyBtn = el("button", { class: "btn", type: "button", onclick: copyCss }, "Kopieer CSS");
+    panel.appendChild(el("div", { class: "tp-actions" }, [
+      el("button", { class: "btn ghost", type: "button",
+        onclick: () => { try { localStorage.removeItem(THEME_KEY); } catch (e) {} activeTheme = defaultTheme(); applyTheme(activeTheme); refresh(); } }, "Herstel"),
+      copyBtn,
+    ]));
+
+    // --- CSS-export om een gekozen thema vast te leggen ---
+    const ta = el("textarea", { readonly: "", spellcheck: "false" });
+    const details = el("details", { class: "tp-export" }, [
+      el("summary", null, "Toon CSS om dit thema vast te leggen"), ta,
+    ]);
+    panel.appendChild(details);
+    details.addEventListener("toggle", () => { if (details.open) syncExport(); });
+
+    function syncExport() { ta.value = themeCss(activeTheme); }
+    function copyCss() {
+      const css = themeCss(activeTheme);
+      ta.value = css; details.open = true;
+      const toast = (msg) => { const t = el("span", { class: "tp-toast" }, msg); copyBtn.after(t); setTimeout(() => t.remove(), 1800); };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(css).then(() => toast("Gekopieerd!")).catch(() => toast("Staat in het vak ↓"));
+      } else { toast("Staat in het vak ↓"); }
+    }
+    function markActivePreset() {
+      panel.querySelectorAll(".tp-preset").forEach((b) =>
+        b.classList.toggle("active", b.getAttribute("data-preset") === activeTheme.presetId));
+    }
+    // zet alle controls terug naar de waarden in activeTheme
+    function refresh() {
+      markActivePreset();
+      panel.querySelectorAll(".tp-color").forEach((inp) => { inp.value = activeTheme.t[inp.getAttribute("data-key")]; });
+      hueInput.value = String(activeTheme.hue || 0);
+      headSel.value = String(activeTheme.head);
+      bodySel.value = String(activeTheme.body);
+      syncExport();
+    }
+
+    const fab = el("button", {
+      class: "theme-fab", type: "button", title: "Stijl aanpassen", "aria-label": "Stijl aanpassen", "aria-expanded": "false",
+      onclick: () => {
+        const opening = panel.hasAttribute("hidden");
+        if (opening) { panel.removeAttribute("hidden"); fab.setAttribute("aria-expanded", "true"); refresh(); }
+        else { panel.setAttribute("hidden", ""); fab.setAttribute("aria-expanded", "false"); }
+      },
+    }, "🎨");
+
+    refresh();
+    document.body.appendChild(panel);
+    document.body.appendChild(fab);
+  }
+
   // ---------- shared chrome (nav + footer) ----------
   function buildHeader(page) {
     const links = [
       ["index.html", "Planten", "index"],
       ["recepten.html", "Recepten", "recepten"],
       ["seizoen.html", "Dit seizoen", "seizoen"],
+      ["projecten.html", "Projecten", "projecten"],
       ["over.html", "Over", "over"],
       ["sign-up.html", "Diner", "signup"],
     ];
@@ -142,6 +430,43 @@
     return status === "verified"
       ? el("span", { class: "badge-verified", text: "✓ gecontroleerd" })
       : el("span", { class: "badge-draft", text: "concept — nog controleren" });
+  }
+
+  // ---------- inline source citations (footnotes) ----------
+  // prose strings may contain [n] / [n,m] markers; n is 1-based into the
+  // plant's `bronnen`. Render each as a superscript link to the notes list.
+  function srcHost(url) {
+    try { return new URL(url, location.href).hostname.replace(/^www\./, ""); }
+    catch (e) { return url || ""; }
+  }
+  function citeFrag(text, bronnen, pid) {
+    const frag = document.createDocumentFragment();
+    text = text || ""; bronnen = bronnen || [];
+    const re = /\[(\d+(?:\s*,\s*\d+)*)\]/g;
+    let last = 0, m;
+    while ((m = re.exec(text)) !== null) {
+      if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+      const nums = m[1].split(",").map((s) => parseInt(s.trim(), 10)).filter((n) => n >= 1 && n <= bronnen.length);
+      if (nums.length) {
+        const sup = el("sup", { class: "fn-ref" });
+        nums.forEach((n, i) => {
+          if (i) sup.appendChild(document.createTextNode(","));
+          sup.appendChild(el("a", { href: "#fn-" + pid + "-" + n, title: srcHost(bronnen[n - 1]) }, String(n)));
+        });
+        frag.appendChild(sup);
+      } else {
+        frag.appendChild(document.createTextNode(m[0])); // out-of-range: keep literal, lose nothing
+      }
+      last = re.lastIndex;
+    }
+    if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+    return frag;
+  }
+  // build a <p>/<div> whose text is run through citeFrag
+  function citeNode(tag, cls, text, bronnen, pid) {
+    const node = el(tag, cls ? { class: cls } : null);
+    node.appendChild(citeFrag(text, bronnen, pid));
+    return node;
   }
 
   // ===================================================================
@@ -280,7 +605,9 @@
     const meta = el("ul", { class: "meta-list" });
     const metaRow = (k, v) => v ? meta.appendChild(el("li", null, [el("span", { class: "k" }, k), document.createTextNode(v)])) : null;
     metaRow("Familie", p.familie);
-    metaRow("Ecosysteem", p.ecosysteem);
+    if (p.ecosysteem) meta.appendChild(el("li", null, [
+      el("span", { class: "k" }, "Ecosysteem"), citeFrag(p.ecosysteem, p.bronnen, p.id),
+    ]));
     if ((p.locaties || []).length) meta.appendChild(el("li", null, [
       el("span", { class: "k" }, "Waar te vinden"),
       el("span", { class: "chip-row" }, p.locaties.map((l) => chip(cap(l)))),
@@ -307,7 +634,7 @@
     const section = (title, body, cls) => {
       if (!body) return;
       const s = el("div", { class: "detail-section" }, el("h2", null, title));
-      if (typeof body === "string") s.appendChild(el(cls ? "div" : "p", { class: cls || "" }, body));
+      if (typeof body === "string") s.appendChild(citeNode(cls ? "div" : "p", cls || "", body, p.bronnen, p.id));
       else s.appendChild(body);
       wrap.appendChild(s);
     };
@@ -320,8 +647,14 @@
     if ((p.seizoenskalender || []).length) {
       const cal = el("div", null);
       p.seizoenskalender.forEach((k) => {
+        let toep = null;
+        if (k.toepassing) {
+          toep = el("span", { class: "toep" });
+          toep.appendChild(document.createTextNode(" — "));
+          toep.appendChild(citeFrag(k.toepassing, p.bronnen, p.id));
+        }
         cal.appendChild(el("div", { class: "kalender-row" }, [
-          el("div", null, [el("span", { class: "deel" }, cap(k.deel)), k.toepassing ? el("span", { class: "toep" }, " — " + k.toepassing) : null]),
+          el("div", null, [el("span", { class: "deel" }, cap(k.deel)), toep]),
           monthBar(k.maanden),
         ]));
       });
@@ -335,12 +668,12 @@
     (function () {
       const gv = p.giftigeVerwisseling;
       if (typeof gv === "string") {
-        if (gv) section("Giftige verwisselingen", el("div", { class: "callout" }, gv));
+        if (gv) section("Giftige verwisselingen", citeNode("div", "callout", gv, p.bronnen, p.id));
         return;
       }
       if (!Array.isArray(gv) || (!gv.length && !p.verwisselingIntro)) return;
       const wrap = el("div");
-      if (p.verwisselingIntro) wrap.appendChild(el("p", { class: "verw-intro" }, p.verwisselingIntro));
+      if (p.verwisselingIntro) wrap.appendChild(citeNode("p", "verw-intro", p.verwisselingIntro, p.bronnen, p.id));
       if (gv.length) {
         const list = el("div", { class: "lookalike-list" });
         gv.forEach((l) => {
@@ -353,7 +686,7 @@
               l.latijn ? el("span", { class: "lookalike-latijn" }, l.latijn) : null,
               badge,
             ]),
-            l.onderscheid ? el("p", { class: "lookalike-onderscheid" }, l.onderscheid) : null,
+            l.onderscheid ? citeNode("p", "lookalike-onderscheid", l.onderscheid, p.bronnen, p.id) : null,
           ]));
         });
         wrap.appendChild(list);
@@ -361,13 +694,13 @@
       section("Giftige verwisselingen", wrap);
     })();
 
-    if (p.waarschuwing) section("Waarschuwing", el("div", { class: "callout warn" }, p.waarschuwing));
+    if (p.waarschuwing) section("Waarschuwing", citeNode("div", "callout warn", p.waarschuwing, p.bronnen, p.id));
 
     // related recipes
     const rel = (recipes || []).filter((r) => (r.planten || []).includes(p.id));
     if (rel.length) {
       const list = el("ul", null, rel.map((r) =>
-        el("li", null, el("a", { href: "recepten.html#" + r.id }, r.titel))));
+        el("li", null, el("a", { href: "recepten.html?recept=" + encodeURIComponent(r.id) }, r.titel))));
       section("Recepten met " + p.naam.toLowerCase(), list);
     }
 
@@ -377,13 +710,16 @@
       section("Meer foto's", gal);
     }
 
-    // sources
+    // sources — numbered notes list; [n] markers in the prose link here
     if ((p.bronnen || []).length) {
-      const src = el("div", { class: "sources" }, [
-        document.createTextNode("Bronnen: "),
-        ...p.bronnen.map((u, i) => el("a", { href: u, target: "_blank", rel: "noopener" }, (i ? " · " : "") + new URL(u, location.href).hostname.replace("www.", ""))),
-      ]);
-      wrap.appendChild(src);
+      const ol = el("ol", { class: "notes-list" }, p.bronnen.map((u, i) =>
+        el("li", { id: "fn-" + p.id + "-" + (i + 1) },
+          el("a", { href: u, target: "_blank", rel: "noopener", title: u }, srcHost(u)))));
+      wrap.appendChild(el("div", { class: "detail-section notes" }, [
+        el("h2", null, "Bronnen"),
+        el("p", { class: "notes-lead" }, "De cijfers in de tekst verwijzen naar deze bronnen."),
+        ol,
+      ]));
     }
 
     wrap.appendChild(el("a", { class: "back-link", href: "index.html" }, "← Terug naar overzicht"));
@@ -393,10 +729,20 @@
   // ===================================================================
   // PAGE: recepten (recipe list, recipe -> plants)
   // ===================================================================
+  // recipe photo: explicit field, else the first linked plant's image (img() self-heals to placeholder)
+  function receptFoto(r, map) {
+    return r.afbeelding || (map[(r.planten || [])[0]] || {}).afbeelding;
+  }
+
   function renderRecepten(plants, recipes) {
     const root = document.getElementById("app");
     root.innerHTML = "";
     const map = byId(plants);
+
+    // ?recept=<id> → toon het volledige recept i.p.v. de tegel-galerij
+    const rid = new URLSearchParams(location.search).get("recept");
+    if (rid) { renderReceptDetail(rid, recipes, map); return; }
+
     const state = { seizoen: null };
 
     const filters = el("div", { class: "filters" });
@@ -408,38 +754,82 @@
         onclick: () => { state.seizoen = state.seizoen === s ? null : s; drawFilters(); draw(); },
       }, SEIZOENEN[s].label)));
     };
-    const stack = el("div", { class: "stack" });
 
+    // zelfde tegel-format als de planten: foto + titel, 3 naast elkaar
+    const grid = el("div", { class: "grid" });
     function draw() {
-      stack.innerHTML = "";
+      grid.innerHTML = "";
       const list = (recipes || []).filter((r) => !state.seizoen || (r.seizoenen || []).includes(state.seizoen));
-      if (!list.length) { stack.appendChild(el("div", { class: "empty" }, "Geen recepten voor dit seizoen.")); return; }
+      if (!list.length) { grid.appendChild(el("div", { class: "empty" }, "Geen recepten voor dit seizoen.")); return; }
       list.forEach((r) => {
-        const card = el("div", { class: "recipe-card", id: r.id }, [
-          el("h3", null, r.titel),
-          el("div", { class: "recipe-meta" }, [
-            ...(r.seizoenen || []).map((s) => chip(SEIZOENEN[s] ? SEIZOENEN[s].label : s, "season")),
-            r.status && r.status !== "verified" ? draftBadge(r.status) : null,
+        const chips = (r.seizoenen || []).map((s) => chip(SEIZOENEN[s] ? SEIZOENEN[s].label : s, "season"));
+        if (r.status && r.status !== "verified") chips.push(draftBadge(r.status));
+        grid.appendChild(el("a", { class: "card", href: "recepten.html?recept=" + encodeURIComponent(r.id) }, [
+          el("div", { class: "card-media" }, img(receptFoto(r, map), r.titel, r.titel)),
+          el("div", { class: "card-body" }, [
+            el("h3", null, r.titel),
+            el("div", { class: "card-chips" }, chips),
           ]),
-          el("div", { class: "plants-needed" }, [
-            el("strong", null, "Planten nodig: "),
-            ...(r.planten || []).map((id, i) => {
-              const pl = map[id];
-              return el("a", { href: "plant.html?plant=" + encodeURIComponent(id) }, (i ? ", " : "") + (pl ? pl.naam : id));
-            }),
-            (r.andereIngredienten || []).length ? el("div", { style: "color:#6b7268;font-size:13px;margin-top:4px" }, "Verder: " + r.andereIngredienten.join(", ")) : null,
-          ]),
-          el("div", { class: "recipe-body", style: "margin-top:10px" }, r.bereiding || ""),
-          r.bron ? el("div", { class: "sources" }, "Bron: " + r.bron) : null,
-        ]);
-        stack.appendChild(card);
+        ]));
       });
-      if (location.hash) { const t = document.getElementById(location.hash.slice(1)); if (t) t.scrollIntoView(); }
     }
 
     drawFilters();
-    root.appendChild(el("div", { class: "container" }, [filters, stack]));
+    root.appendChild(el("div", { class: "container" }, [filters, grid]));
     draw();
+  }
+
+  // full recipe page (recepten.html?recept=<id>)
+  function renderReceptDetail(rid, recipes, map) {
+    const root = document.getElementById("app");
+    root.innerHTML = "";
+    const r = (recipes || []).find((x) => x.id === rid);
+    if (!r) {
+      root.appendChild(el("div", { class: "detail" }, [
+        el("h1", null, "Recept niet gevonden"),
+        el("a", { class: "back-link", href: "recepten.html" }, "← Terug naar recepten"),
+      ]));
+      document.title = "Recept niet gevonden — HerbalPlantsMar";
+      return;
+    }
+    document.title = r.titel + " — HerbalPlantsMar";
+
+    const head = el("div", { class: "detail-head" }, [
+      el("h1", null, r.titel),
+      el("div", { class: "chip-row", style: "margin-top:8px" }, [
+        ...(r.seizoenen || []).map((s) => chip(SEIZOENEN[s] ? SEIZOENEN[s].label : s, "season")),
+        r.status && r.status !== "verified" ? draftBadge(r.status) : null,
+      ]),
+    ]);
+    const meta = el("ul", { class: "meta-list" });
+    if ((r.planten || []).length) meta.appendChild(el("li", null, [
+      el("span", { class: "k" }, "Planten"),
+      el("span", { class: "chip-row" }, r.planten.map((id) =>
+        el("a", { class: "chip", href: "plant.html?plant=" + encodeURIComponent(id), style: "text-decoration:none" },
+          map[id] ? map[id].naam : id))),
+    ]));
+    if ((r.andereIngredienten || []).length) meta.appendChild(el("li", null, [
+      el("span", { class: "k" }, "Verder nodig"),
+      document.createTextNode(r.andereIngredienten.join(", ")),
+    ]));
+    head.appendChild(meta);
+
+    const wrap = el("div", { class: "detail" }, [
+      el("div", { class: "detail-top" }, [
+        el("div", { class: "detail-hero" }, img(receptFoto(r, map), r.titel, r.titel)),
+        head,
+      ]),
+    ]);
+
+    if (r.bereiding) wrap.appendChild(el("div", { class: "detail-section" }, [
+      el("h2", null, "Bereiding"),
+      el("div", { class: "recipe-body" }, r.bereiding),
+    ]));
+    if (r.bron) wrap.appendChild(el("div", { class: "detail-section" },
+      el("div", { class: "sources" }, "Bron: " + r.bron)));
+
+    wrap.appendChild(el("a", { class: "back-link", href: "recepten.html" }, "← Terug naar recepten"));
+    root.appendChild(wrap);
   }
 
   // ===================================================================
@@ -485,7 +875,7 @@
     if (recs.length) {
       root.appendChild(el("div", { class: "container" }, el("h2", { class: "section-title", style: "margin-top:40px" }, "Recepten voor nu")));
       const stack = el("div", { class: "stack" }, recs.map((r) =>
-        el("a", { class: "recipe-card", href: "recepten.html#" + r.id, style: "text-decoration:none;color:inherit;display:block" }, [
+        el("a", { class: "recipe-card", href: "recepten.html?recept=" + encodeURIComponent(r.id), style: "text-decoration:none;color:inherit;display:block" }, [
           el("h3", null, r.titel),
           el("div", { class: "plants-needed" }, "Met: " + (r.planten || []).map((id) => (byId(plants)[id] || {}).naam || id).join(", ")),
         ])));
@@ -502,6 +892,8 @@
     const wrap = el("div", { class: "admin-wrap" });
     wrap.appendChild(el("p", { class: "section-lead" },
       "Vul de velden in en klik op ‘Genereer JSON’. Kopieer het blok in data/plants.json (of download het) en commit het naar de repo. Geen code nodig."));
+    wrap.appendChild(el("p", { class: "hint" },
+      "Bronvermelding: zet in de lopende tekst een voetnoot [n] direct achter een bewering — n is het nummer van de bron (1 = eerste URL in ‘Bronnen’, 2 = tweede, enz.). Meerdere bronnen: [2,5]. Voorbeeld: \"…veel silicium[2], traditioneel…\". De cijfers worden op de plantpagina superscriptjes die naar de genummerde bronnenlijst linken."));
 
     const f = {};
     function field(key, label, hint, type) {
@@ -528,7 +920,7 @@
     field("giftigeVerwisseling", "Giftige verwisselingen (lijst)", "één per regel: naam | latijn | giftig(ja/nee) | onderscheid", "area");
     field("waarschuwing", "Waarschuwing", null, "area");
     field("seizoenskalender", "Seizoenskalender", "regels: deel | maandnummers (1-12) | toepassing", "area");
-    field("bronnen", "Bronnen", "URL's, komma-gescheiden");
+    field("bronnen", "Bronnen", "URL's, komma-gescheiden — volgorde = voetnootnummers ([1]=eerste, [2]=tweede…)");
 
     const out = el("textarea", { class: "admin-out", readonly: "readonly" });
     const list = (s) => (s || "").split(",").map((x) => x.trim()).filter(Boolean);
@@ -592,10 +984,11 @@
     const page = document.body.dataset.page || "index";
     const ctx = buildHeader(page);
     buildFooter();
+    buildThemePanel();
     const app = document.getElementById("app");
 
     if (page === "admin") { renderAdmin(); return; }
-    if (page === "over" || page === "signup" || page === "diner") return; // static pages
+    if (page === "over" || page === "signup" || page === "diner" || page === "projecten") return; // static pages
 
     if (app) app.appendChild(el("div", { class: "loading" }, "Laden…"));
     try {
