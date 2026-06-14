@@ -508,7 +508,7 @@
     app.innerHTML = "";
 
     const TILES = [
-      { key: "planten",   label: "Planten",   sub: "Wat je vindt & wat je ermee kunt — ook wat er nú is" },
+      { key: "planten",   label: "Planten",   sub: "Wat je vindt & wat je ermee kunt" },
       { key: "recepten",  label: "Recepten",  sub: "Koken met je oogst" },
       { key: "projecten", label: "Projecten", sub: "Wandelingen & workshops" },
     ];
