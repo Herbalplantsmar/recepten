@@ -173,31 +173,42 @@ img { max-width: 100%; display: block; }
 .filter-chip:hover { background: var(--mint-50); }
 .filter-chip.active { background: var(--green-700); color: #fff; border-color: var(--green-700); }
 
-/* ---------- Index layout: filter sidebar + grid ---------- */
-.index-layout {
-  display: grid;
-  grid-template-columns: 152px 1fr;
-  gap: 22px;
-  align-items: start;
+/* ---------- Filters — standaard ingeklapt; de planten staan voorop ---------- */
+.filter-bar { display: flex; align-items: center; gap: 12px; margin: 0 0 20px; }
+.filter-toggle {
+  display: inline-flex; align-items: center; gap: 8px;
+  border: 1px solid rgba(var(--primary-rgb), .25);
+  background: var(--paper); color: var(--green-700);
+  font-family: var(--sans); font-weight: 600; font-size: 14px;
+  padding: 8px 14px; cursor: pointer;
+  transition: background .18s ease, border-color .18s ease;
 }
-.index-main { min-width: 0; }
+.filter-toggle:hover { background: var(--mint-50); }
+.filter-toggle[aria-expanded="true"] { background: var(--mint-100); border-color: var(--green-500); }
+.filter-toggle .count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 18px; height: 18px; padding: 0 5px;
+  background: var(--green-700); color: #fff; font-size: 11px; font-weight: 700; line-height: 1;
+}
+.filter-toggle .count[hidden] { display: none; }
+
 .filter-panel {
-  position: sticky;
-  top: 70px;
   background: var(--paper);
   border: 1px solid rgba(var(--primary-rgb), .12);
-  padding: 10px 11px 13px;
   box-shadow: var(--shadow-sm);
+  padding: 12px 16px 16px;
+  margin: 0 0 24px;
 }
+.filter-panel[hidden] { display: none; }
 .filter-panel-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 8px;
-  padding-bottom: 8px;
+  padding-bottom: 10px;
+  margin-bottom: 4px;
   border-bottom: 1px solid rgba(var(--primary-rgb), .1);
 }
-.filter-panel-head h2 { font-size: 14px; margin: 0; }
 .filter-clear {
   background: none; border: none; cursor: pointer;
   color: var(--green-500); font-size: 11px; font-weight: 600; font-family: var(--sans);
@@ -205,7 +216,8 @@ img { max-width: 100%; display: block; }
 }
 .filter-clear:hover { color: var(--green-900); text-decoration: underline; }
 .filter-clear:disabled { color: #c4c9c0; cursor: default; text-decoration: none; }
-.filter-group { margin-top: 11px; }
+.filter-panel-inner { display: flex; flex-wrap: wrap; gap: 14px 30px; }
+.filter-group { flex: 1 1 200px; min-width: 160px; }
 .filter-heading {
   font-family: var(--sans);
   font-size: 10.5px;
@@ -213,15 +225,11 @@ img { max-width: 100%; display: block; }
   letter-spacing: .5px;
   font-weight: 700;
   color: var(--muted);
-  margin: 0 0 6px;
+  margin: 0 0 7px;
 }
 .filter-chips { display: flex; flex-wrap: wrap; gap: 5px; }
-@media (max-width: 760px) {
-  .index-layout { grid-template-columns: 1fr; gap: 18px; }
-  .filter-panel { position: static; }
-}
 
-/* ---------- Card grid — altijd 3 naast elkaar, foto is de baas ---------- */
+/* ---------- Card grid — standaard 3 naast elkaar, foto is de baas ---------- */
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -229,6 +237,22 @@ img { max-width: 100%; display: block; }
 }
 @media (max-width: 640px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 12px; } }
 @media (max-width: 400px) { .grid { grid-template-columns: 1fr; } }
+
+/* Weinig kaarten (filter/seizoen) → laat ze niet in een hoekje hangen:
+   smaller, gecentreerd grid zodat 1–2 kaarten wat breder worden.
+   Alleen op ruimere schermen; mobiel houdt de regels hierboven aan. */
+@media (min-width: 641px) {
+  .grid.cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 900px;
+    margin-left: auto; margin-right: auto;
+  }
+  .grid.cols-1 {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 520px;
+    margin-left: auto; margin-right: auto;
+  }
+}
 .card {
   background: var(--paper);
   overflow: hidden;

@@ -413,6 +413,12 @@
 
   function chip(text, cls) { return el("span", { class: "chip " + (cls || "") }, text); }
 
+  // weinig kaarten? markeer het grid zodat CSS ze wat breder/gecentreerd toont
+  function fitGrid(grid, n) {
+    grid.classList.toggle("cols-1", n === 1);
+    grid.classList.toggle("cols-2", n === 2);
+  }
+
   // wrap matched substring of `text` in <mark>; returns a DOM fragment
   function highlight(text, q) {
     text = text || "";
@@ -508,6 +514,7 @@
     function draw() {
       grid.innerHTML = "";
       const list = plants.filter(matches);
+      fitGrid(grid, list.length);
       if (!list.length) { grid.appendChild(el("div", { class: "empty" }, "Geen planten gevonden.")); return; }
       const q = state.q.trim();
       const ql = q.toLowerCase();
@@ -528,7 +535,7 @@
       });
     }
 
-    // filter UI — left sidebar
+    // filter UI — chip-groepen in het inklapbare paneel
     function chipGroup(label, values, key, fmt) {
       const chips = el("div", { class: "filter-chips" });
       const render = () => {
@@ -548,19 +555,35 @@
       class: "filter-clear",
       onclick: () => { state.locatie = null; state.deel = null; state.seizoen = null; refreshAll(); draw(); },
     }, "Wis filters");
+
+    // filters staan ingeklapt achter één knop (met teller) → planten op de voorgrond
+    const countBadge = el("span", { class: "count", hidden: "" }, "0");
+    const toggleBtn = el("button", {
+      class: "filter-toggle", type: "button", "aria-expanded": "false", "aria-controls": "filter-panel",
+      onclick: () => {
+        const opening = panel.hasAttribute("hidden");
+        panel.toggleAttribute("hidden", !opening);
+        toggleBtn.setAttribute("aria-expanded", opening ? "true" : "false");
+      },
+    }, [el("span", null, "Filters"), countBadge]);
+
     function refreshAll() {
       gLoc.render(); gDeel.render(); gSeiz.render();
-      clearBtn.disabled = !(state.locatie || state.deel || state.seizoen);
+      const n = (state.locatie ? 1 : 0) + (state.deel ? 1 : 0) + (state.seizoen ? 1 : 0);
+      clearBtn.disabled = !n;
+      countBadge.textContent = String(n);
+      countBadge.hidden = n === 0;
     }
     refreshAll();
 
-    const panel = el("aside", { class: "filter-panel" }, [
-      el("div", { class: "filter-panel-head" }, [el("h2", null, "Filters"), clearBtn]),
-      gLoc.node, gDeel.node, gSeiz.node,
+    const panel = el("aside", { class: "filter-panel", id: "filter-panel", hidden: "" }, [
+      el("div", { class: "filter-panel-head" }, [el("span", { class: "filter-heading" }, "Verfijnen"), clearBtn]),
+      el("div", { class: "filter-panel-inner" }, [gLoc.node, gDeel.node, gSeiz.node]),
     ]);
-    root.appendChild(el("div", { class: "container index-layout" }, [
+    root.appendChild(el("div", { class: "container" }, [
+      el("div", { class: "filter-bar" }, toggleBtn),
       panel,
-      el("div", { class: "index-main" }, grid),
+      grid,
     ]));
     draw();
 
@@ -760,6 +783,7 @@
     function draw() {
       grid.innerHTML = "";
       const list = (recipes || []).filter((r) => !state.seizoen || (r.seizoenen || []).includes(state.seizoen));
+      fitGrid(grid, list.length);
       if (!list.length) { grid.appendChild(el("div", { class: "empty" }, "Geen recepten voor dit seizoen.")); return; }
       list.forEach((r) => {
         const chips = (r.seizoenen || []).map((s) => chip(SEIZOENEN[s] ? SEIZOENEN[s].label : s, "season"));
@@ -867,6 +891,7 @@
         ]),
       ]));
     });
+    fitGrid(grid, nu.length);
     root.appendChild(el("div", { class: "container" }, el("h2", { class: "section-title" }, "Nu te oogsten")));
     root.appendChild(el("div", { class: "container" }, grid));
 
