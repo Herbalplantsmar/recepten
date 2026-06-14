@@ -367,10 +367,9 @@
     const links = [
       ["index.html#planten", "Planten", "planten"],
       ["index.html#recepten", "Recepten", "recepten"],
-      ["index.html#seizoen", "Dit seizoen", "seizoen"],
       ["index.html#projecten", "Projecten", "projecten"],
     ];
-    const pageActive = { plant: "planten", recepten: "recepten", seizoen: "seizoen", projecten: "projecten" }[page] || "";
+    const pageActive = { plant: "planten", recepten: "recepten", projecten: "projecten" }[page] || "";
     const ul = el("ul", { class: "nav-links" },
       links.map(([href, label, key]) =>
         el("li", null, el("a", { href, "data-nav": key, class: key === pageActive ? "active" : "" }, label))));
@@ -411,6 +410,37 @@
   const byId = (plants) => Object.fromEntries(plants.map((p) => [p.id, p]));
 
   function chip(text, cls) { return el("span", { class: "chip " + (cls || "") }, text); }
+
+  // herbruikbare filter-chipgroep voor de inklapbare panelen (planten + recepten).
+  // state[key] houdt de actieve waarde bij; klik op een actieve chip zet 'm uit.
+  function chipGroup(state, label, values, key, fmt, onChange) {
+    const chips = el("div", { class: "filter-chips" });
+    const render = () => {
+      chips.innerHTML = "";
+      values.forEach((v) => chips.appendChild(el("button", {
+        class: "filter-chip" + (state[key] === v ? " active" : ""),
+        onclick: () => { state[key] = state[key] === v ? null : v; onChange(); },
+      }, fmt ? fmt(v) : cap(v))));
+    };
+    return { node: el("div", { class: "filter-group" }, [el("h3", { class: "filter-heading" }, label), chips]), render };
+  }
+
+  // hamburger-knop die een filterpaneel in/uitklapt (zelfde gedrag voor elke galerij)
+  function filterToggle(panel, countBadge) {
+    const btn = el("button", {
+      class: "filter-toggle", type: "button", "aria-expanded": "false",
+      "aria-controls": panel.id, "aria-label": "Filters", title: "Filters",
+      onclick: () => {
+        const opening = panel.hasAttribute("hidden");
+        panel.toggleAttribute("hidden", !opening);
+        btn.setAttribute("aria-expanded", opening ? "true" : "false");
+      },
+    }, [
+      el("span", { class: "filter-toggle-bars", "aria-hidden": "true" }, [el("i"), el("i"), el("i")]),
+      countBadge,
+    ]);
+    return btn;
+  }
 
   // wrap matched substring of `text` in <mark>; returns a DOM fragment
   function highlight(text, q) {
@@ -478,10 +508,9 @@
     app.innerHTML = "";
 
     const TILES = [
-      { key: "planten",   label: "Planten",     sub: "Wat je vindt & wat je ermee kunt" },
-      { key: "recepten",  label: "Recepten",    sub: "Koken met je oogst" },
-      { key: "seizoen",   label: "Dit seizoen", sub: "Wat je nu kunt oogsten" },
-      { key: "projecten", label: "Projecten",   sub: "Wandelingen & workshops" },
+      { key: "planten",   label: "Planten",   sub: "Wat je vindt & wat je ermee kunt — ook wat er nú is" },
+      { key: "recepten",  label: "Recepten",  sub: "Koken met je oogst" },
+      { key: "projecten", label: "Projecten", sub: "Wandelingen & workshops" },
     ];
     const VALID = new Set(TILES.map((t) => t.key));
 
@@ -528,7 +557,6 @@
     function render(key) {
       if (key === "planten") renderIndex(plants, ctx);
       else if (key === "recepten") renderRecepten(plants, recipes);
-      else if (key === "seizoen") renderSeizoen(plants, recipes);
       else if (key === "projecten") return renderProjecten(); // async → promise
     }
 
@@ -551,7 +579,8 @@
       else location.hash = key;
     }
     function fromHash(scroll) {
-      const key = (location.hash || "").replace(/^#/, "");
+      let key = (location.hash || "").replace(/^#/, "");
+      if (key === "seizoen") key = "planten"; // Dit seizoen is opgegaan in Planten (oude links blijven werken)
       if (VALID.has(key)) apply(key, scroll);
       else clearSection();
     }
@@ -590,9 +619,15 @@
       if (state.locatie && !(p.locaties || []).includes(state.locatie)) return false;
       if (state.deel && !(p.eetbareDelen || []).includes(state.deel)) return false;
       if (state.seizoen) {
-        const maanden = SEIZOENEN[state.seizoen].maanden;
-        const inSeason = (p.seizoenskalender || []).some((k) => (k.maanden || []).some((m) => maanden.includes(m)));
-        if (!inSeason) return false;
+        if (state.seizoen === "nu") {
+          // "Dit seizoen" = oogstbaar in de huidige maand (verwerkt de oude Dit-seizoen-pagina)
+          const mNow = new Date().getMonth() + 1;
+          if (!(p.seizoenskalender || []).some((k) => (k.maanden || []).includes(mNow))) return false;
+        } else {
+          const maanden = SEIZOENEN[state.seizoen].maanden;
+          const inSeason = (p.seizoenskalender || []).some((k) => (k.maanden || []).some((m) => maanden.includes(m)));
+          if (!inSeason) return false;
+        }
       }
       return true;
     }
@@ -637,64 +672,46 @@
       emptyMsg.hidden = n > 0;
     }
 
-    // filter UI — chip-groepen in het inklapbare paneel
-    function chipGroup(label, values, key, fmt) {
-      const chips = el("div", { class: "filter-chips" });
-      const render = () => {
-        chips.innerHTML = "";
-        values.forEach((v) => chips.appendChild(el("button", {
-          class: "filter-chip" + (state[key] === v ? " active" : ""),
-          onclick: () => { state[key] = state[key] === v ? null : v; refreshAll(); draw(); },
-        }, fmt ? fmt(v) : cap(v))));
-      };
-      return { node: el("div", { class: "filter-group" }, [el("h3", { class: "filter-heading" }, label), chips]), render };
-    }
-    const gLoc = chipGroup("Locatie", locaties, "locatie", cap);
-    const gDeel = chipGroup("Eetbaar deel", delen, "deel", cap);
-    const gSeiz = chipGroup("Seizoen", Object.keys(SEIZOENEN), "seizoen", (v) => SEIZOENEN[v].label);
+    // filters + zoeken: alles zit in één inklapbaar paneel achter de hamburger
+    const onChange = () => { refreshAll(); draw(); };
+    const gLoc = chipGroup(state, "Locatie", locaties, "locatie", cap, onChange);
+    const gDeel = chipGroup(state, "Eetbaar deel", delen, "deel", cap, onChange);
+    const gSeiz = chipGroup(state, "Seizoen", ["nu", ...Object.keys(SEIZOENEN)], "seizoen",
+      (v) => v === "nu" ? "Dit seizoen" : SEIZOENEN[v].label, onChange);
+
+    // zoekveld valt samen met de filters → staat boven in het paneel, niet als losse balk
+    const searchInput = el("input", {
+      type: "search", class: "filter-search", placeholder: "Zoek op naam, Latijn of familie…",
+      "aria-label": "Zoek plant", value: state.q,
+    });
+    searchInput.oninput = function () { state.q = this.value; refreshAll(); draw(); };
 
     const clearBtn = el("button", {
       class: "filter-clear",
-      onclick: () => { state.locatie = null; state.deel = null; state.seizoen = null; refreshAll(); draw(); },
+      onclick: () => { state.q = ""; state.locatie = null; state.deel = null; state.seizoen = null; searchInput.value = ""; refreshAll(); draw(); },
     }, "Wis filters");
 
-    // filters staan ingeklapt achter één knop (met teller) → planten op de voorgrond
     const countBadge = el("span", { class: "count", hidden: "" }, "0");
-    const toggleBtn = el("button", {
-      class: "filter-toggle", type: "button", "aria-expanded": "false",
-      "aria-controls": "filter-panel", "aria-label": "Filters", title: "Filters",
-      onclick: () => {
-        const opening = panel.hasAttribute("hidden");
-        panel.toggleAttribute("hidden", !opening);
-        toggleBtn.setAttribute("aria-expanded", opening ? "true" : "false");
-      },
-    }, [
-      el("span", { class: "filter-toggle-bars", "aria-hidden": "true" }, [el("i"), el("i"), el("i")]),
-      countBadge,
+
+    const panel = el("aside", { class: "filter-panel", id: "filter-panel", hidden: "" }, [
+      el("div", { class: "filter-panel-head" }, [el("span", { class: "filter-heading" }, "Verfijnen"), clearBtn]),
+      el("div", { class: "filter-panel-inner" }, [
+        el("div", { class: "filter-group filter-group--search" }, [el("h3", { class: "filter-heading" }, "Zoeken"), searchInput]),
+        gLoc.node, gDeel.node, gSeiz.node,
+      ]),
     ]);
 
     function refreshAll() {
       gLoc.render(); gDeel.render(); gSeiz.render();
-      const n = (state.locatie ? 1 : 0) + (state.deel ? 1 : 0) + (state.seizoen ? 1 : 0);
+      const n = (state.q.trim() ? 1 : 0) + (state.locatie ? 1 : 0) + (state.deel ? 1 : 0) + (state.seizoen ? 1 : 0);
       clearBtn.disabled = !n;
       countBadge.textContent = String(n);
       countBadge.hidden = n === 0;
     }
     refreshAll();
 
-    const panel = el("aside", { class: "filter-panel", id: "filter-panel", hidden: "" }, [
-      el("div", { class: "filter-panel-head" }, [el("span", { class: "filter-heading" }, "Verfijnen"), clearBtn]),
-      el("div", { class: "filter-panel-inner" }, [gLoc.node, gDeel.node, gSeiz.node]),
-    ]);
-    // zoekveld hoort bij de planten-galerij zelf (staat links in de filter-balk)
-    const searchInput = el("input", {
-      type: "search", class: "plant-search", placeholder: "Zoek plant…",
-      "aria-label": "Zoek plant", value: state.q,
-    });
-    searchInput.oninput = function () { state.q = this.value; draw(); };
-
     root.appendChild(el("div", { class: "container" }, [
-      el("div", { class: "filter-bar" }, [searchInput, toggleBtn]),
+      el("div", { class: "filter-bar" }, [filterToggle(panel, countBadge)]),
       panel,
       grid,
     ]));
@@ -876,7 +893,7 @@
     const rid = new URLSearchParams(location.search).get("recept");
     if (rid) { renderReceptDetail(rid, recipes, map); return; }
 
-    const state = { q: "" };
+    const state = { q: "", seizoen: null };
 
     // zelfde tegel-format als de planten: foto + titel, 3 naast elkaar
     const grid = el("div", { class: "grid" });
@@ -889,12 +906,17 @@
         + (r.andereIngredienten || []).join(" ")).toLowerCase();
       return hay.includes(q);
     }
+    function recInSeizoen(r) {
+      if (!state.seizoen) return true;
+      const key = state.seizoen === "nu" ? seizoenVanMaand(new Date().getMonth() + 1) : state.seizoen;
+      return (r.seizoenen || []).includes(key);
+    }
     function draw() {
       grid.innerHTML = "";
       const q = state.q.trim().toLowerCase();
-      const list = (recipes || []).filter((r) => !q || matchRecept(r, q))
+      const list = (recipes || []).filter((r) => (!q || matchRecept(r, q)) && recInSeizoen(r))
         .sort((a, b) => (heeftFoto(b) - heeftFoto(a)) || a.titel.localeCompare(b.titel, "nl"));
-      if (!list.length) { grid.appendChild(el("div", { class: "empty" }, q ? "Geen recepten gevonden." : "Nog geen recepten.")); return; }
+      if (!list.length) { grid.appendChild(el("div", { class: "empty" }, (q || state.seizoen) ? "Geen recepten gevonden." : "Nog geen recepten.")); return; }
       list.forEach((r) => {
         const chips = (r.seizoenen || []).map((s) => chip(SEIZOENEN[s] ? SEIZOENEN[s].label : s, "season"));
         if (r.status && r.status !== "verified") chips.push(draftBadge(r.status));
@@ -908,15 +930,44 @@
       });
     }
 
-    // zoekbalk identiek aan de planten-galerij → de balk onder de tabs is overal gelijk
+    // zelfde inklapbare filters als de planten: hamburger → paneel met zoeken + seizoen
+    const onChange = () => { refreshAll(); draw(); };
     const searchInput = el("input", {
-      type: "search", class: "plant-search", placeholder: "Zoek recept…",
+      type: "search", class: "filter-search", placeholder: "Zoek op recept, plant of ingrediënt…",
       "aria-label": "Zoek recept", value: state.q,
     });
-    searchInput.oninput = function () { state.q = this.value; draw(); };
+    searchInput.oninput = function () { state.q = this.value; refreshAll(); draw(); };
+
+    const gSeiz = chipGroup(state, "Seizoen", ["nu", ...Object.keys(SEIZOENEN)], "seizoen",
+      (v) => v === "nu" ? "Dit seizoen" : SEIZOENEN[v].label, onChange);
+
+    const clearBtn = el("button", {
+      class: "filter-clear",
+      onclick: () => { state.q = ""; state.seizoen = null; searchInput.value = ""; refreshAll(); draw(); },
+    }, "Wis filters");
+
+    const countBadge = el("span", { class: "count", hidden: "" }, "0");
+
+    const panel = el("aside", { class: "filter-panel", id: "filter-panel-recepten", hidden: "" }, [
+      el("div", { class: "filter-panel-head" }, [el("span", { class: "filter-heading" }, "Verfijnen"), clearBtn]),
+      el("div", { class: "filter-panel-inner" }, [
+        el("div", { class: "filter-group filter-group--search" }, [el("h3", { class: "filter-heading" }, "Zoeken"), searchInput]),
+        gSeiz.node,
+      ]),
+    ]);
+
+    function refreshAll() {
+      gSeiz.render();
+      const n = (state.q.trim() ? 1 : 0) + (state.seizoen ? 1 : 0);
+      clearBtn.disabled = !n;
+      countBadge.textContent = String(n);
+      countBadge.hidden = n === 0;
+    }
+    refreshAll();
 
     root.appendChild(el("div", { class: "container" }, [
-      el("div", { class: "filter-bar" }, [searchInput]),
+      el("div", { class: "filter-bar" }, [filterToggle(panel, countBadge)]),
+      panel,
       grid,
     ]));
     draw();

@@ -197,7 +197,7 @@ img { max-width: 100%; display: block; }
   margin: -44px auto 8px;        /* iets over de banner heen */
   padding: 0 22px;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 16px;
   position: relative;
   z-index: 5;
@@ -277,6 +277,18 @@ img { max-width: 100%; display: block; }
 }
 .plant-search:focus { outline: none; border-color: var(--green-500); box-shadow: 0 0 0 3px rgba(var(--primary-mid-rgb), .18); }
 .filter-bar .filter-toggle { margin-left: auto; }
+/* zoekveld zit nu IN het filterpaneel (valt samen met de filters), volle breedte boven de chips */
+.filter-search {
+  width: 100%;
+  border: 1px solid rgba(var(--primary-rgb), .25);
+  background: var(--paper); color: var(--ink);
+  border-radius: 999px; padding: 9px 16px;
+  font-size: 14px; font-family: var(--sans);
+  transition: box-shadow .2s ease, border-color .2s ease;
+}
+.filter-search:focus { outline: none; border-color: var(--green-500); box-shadow: 0 0 0 3px rgba(var(--primary-mid-rgb), .18); }
+.filter-panel-inner .filter-group--search { flex: 1 1 100%; }
+.filter-group--search .filter-search { max-width: 420px; }
 /* Subtiel hamburger-icoontje (3 streepjes): klein en onopvallend, klik = filters
    klappen uit. Planten blijven voorop. */
 .filter-toggle {
