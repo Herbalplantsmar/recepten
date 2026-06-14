@@ -64,6 +64,17 @@
     return node;
   }
 
+  // kleine debounce: bundelt snel typen tot één update → geen schokkerig
+  // herfilteren/herschikken per toetsaanslag.
+  function debounce(fn, ms) {
+    let t = 0;
+    return function () {
+      const args = arguments, self = this;
+      clearTimeout(t);
+      t = setTimeout(function () { fn.apply(self, args); }, ms);
+    };
+  }
+
   // ===================================================================
   // STIJL-PANEEL — live thema-switcher (kleuren, accenten, lettertypen).
   // Schrijft uitsluitend de thema-tokens in :root; keuze in localStorage.
@@ -684,7 +695,9 @@
       type: "search", class: "filter-search", placeholder: "Zoek op naam, Latijn of familie…",
       "aria-label": "Zoek plant", value: state.q,
     });
-    searchInput.oninput = function () { state.q = this.value; refreshAll(); draw(); };
+    // alleen herfilteren ná korte typpauze → geen schok per toetsaanslag.
+    const onSearch = debounce(() => { updateMeta(); draw(); }, 120);
+    searchInput.oninput = function () { state.q = this.value; onSearch(); };
 
     const clearBtn = el("button", {
       class: "filter-clear",
@@ -701,13 +714,16 @@
       ]),
     ]);
 
-    function refreshAll() {
-      gLoc.render(); gDeel.render(); gSeiz.render();
+    // chips alleen hertekenen wanneer een chip wijzigt; bij typen niet (anders
+    // flikkeren/verschuiven alle filterknoppen mee per toetsaanslag).
+    function renderChips() { gLoc.render(); gDeel.render(); gSeiz.render(); }
+    function updateMeta() {
       const n = (state.q.trim() ? 1 : 0) + (state.locatie ? 1 : 0) + (state.deel ? 1 : 0) + (state.seizoen ? 1 : 0);
       clearBtn.disabled = !n;
       countBadge.textContent = String(n);
       countBadge.hidden = n === 0;
     }
+    function refreshAll() { renderChips(); updateMeta(); }
     refreshAll();
 
     root.appendChild(el("div", { class: "container" }, [
@@ -911,23 +927,38 @@
       const key = state.seizoen === "nu" ? seizoenVanMaand(new Date().getMonth() + 1) : state.seizoen;
       return (r.seizoenen || []).includes(key);
     }
+    // Bouw elke recepttegel één keer en hergebruik 'm (zelfde aanpak als de
+    // planten-galerij): filteren verbergt/toont kaarten i.p.v. de hele grid te
+    // herbouwen — geen flikkering, foto's herladen niet, geen sprongen.
+    const ordered = [...(recipes || [])].sort((a, b) =>
+      (heeftFoto(b) - heeftFoto(a)) || a.titel.localeCompare(b.titel, "nl"));
+    const cards = ordered.map((r) => {
+      const chips = (r.seizoenen || []).map((s) => chip(SEIZOENEN[s] ? SEIZOENEN[s].label : s, "season"));
+      if (r.status && r.status !== "verified") chips.push(draftBadge(r.status));
+      const card = el("a", { class: "card", href: "recepten.html?recept=" + encodeURIComponent(r.id) }, [
+        el("div", { class: "card-media" }, img(receptFoto(r, map), r.titel, r.titel)),
+        el("div", { class: "card-body card-body--center" }, [
+          el("h3", null, r.titel),
+          el("div", { class: "card-chips" }, chips),
+        ]),
+      ]);
+      grid.appendChild(card);
+      return { r, card };
+    });
+    const emptyMsg = el("div", { class: "empty" }, "");
+    emptyMsg.hidden = true;
+    grid.appendChild(emptyMsg);
+
     function draw() {
-      grid.innerHTML = "";
       const q = state.q.trim().toLowerCase();
-      const list = (recipes || []).filter((r) => (!q || matchRecept(r, q)) && recInSeizoen(r))
-        .sort((a, b) => (heeftFoto(b) - heeftFoto(a)) || a.titel.localeCompare(b.titel, "nl"));
-      if (!list.length) { grid.appendChild(el("div", { class: "empty" }, (q || state.seizoen) ? "Geen recepten gevonden." : "Nog geen recepten.")); return; }
-      list.forEach((r) => {
-        const chips = (r.seizoenen || []).map((s) => chip(SEIZOENEN[s] ? SEIZOENEN[s].label : s, "season"));
-        if (r.status && r.status !== "verified") chips.push(draftBadge(r.status));
-        grid.appendChild(el("a", { class: "card", href: "recepten.html?recept=" + encodeURIComponent(r.id) }, [
-          el("div", { class: "card-media" }, img(receptFoto(r, map), r.titel, r.titel)),
-          el("div", { class: "card-body card-body--center" }, [
-            el("h3", null, r.titel),
-            el("div", { class: "card-chips" }, chips),
-          ]),
-        ]));
+      let n = 0;
+      cards.forEach((c) => {
+        const show = (!q || matchRecept(c.r, q)) && recInSeizoen(c.r);
+        c.card.hidden = !show;
+        if (show) n++;
       });
+      if (!n) emptyMsg.textContent = (recipes && recipes.length) ? "Geen recepten gevonden." : "Nog geen recepten.";
+      emptyMsg.hidden = n > 0;
     }
 
     // zelfde inklapbare filters als de planten: hamburger → paneel met zoeken + seizoen
@@ -936,7 +967,9 @@
       type: "search", class: "filter-search", placeholder: "Zoek op recept, plant of ingrediënt…",
       "aria-label": "Zoek recept", value: state.q,
     });
-    searchInput.oninput = function () { state.q = this.value; refreshAll(); draw(); };
+    // alleen herfilteren ná korte typpauze → geen schok per toetsaanslag.
+    const onSearch = debounce(() => { updateMeta(); draw(); }, 120);
+    searchInput.oninput = function () { state.q = this.value; onSearch(); };
 
     const gSeiz = chipGroup(state, "Seizoen", ["nu", ...Object.keys(SEIZOENEN)], "seizoen",
       (v) => v === "nu" ? "Dit seizoen" : SEIZOENEN[v].label, onChange);
@@ -956,13 +989,15 @@
       ]),
     ]);
 
-    function refreshAll() {
-      gSeiz.render();
+    // chips alleen hertekenen wanneer een chip wijzigt; bij typen niet.
+    function renderChips() { gSeiz.render(); }
+    function updateMeta() {
       const n = (state.q.trim() ? 1 : 0) + (state.seizoen ? 1 : 0);
       clearBtn.disabled = !n;
       countBadge.textContent = String(n);
       countBadge.hidden = n === 0;
     }
+    function refreshAll() { renderChips(); updateMeta(); }
     refreshAll();
 
     root.appendChild(el("div", { class: "container" }, [
