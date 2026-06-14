@@ -1,187 +1,438 @@
+/* =========================================================
+   HERBALPLANTSMAR — design system
+   Vanilla, data-driven foraging site. No build step.
+   ========================================================= */
+
+:root {
+  --green-900: #1f4d34;
+  --green-700: #2c6e49;
+  --green-500: #4c956c;
+  --green-300: #a7c957;
+  --mint-100:  #e2f3e3;
+  --mint-50:   #eef7ec;
+  --cream:     #f7f5f0;
+  --paper:     #ffffff;
+  --ink:       #26302a;
+  --muted:     #6b7268;
+  --sand:      #fbf3df;
+  --sand-bord: #e6c873;
+  --amber-ink: #7a5b18;
+  --shadow-sm: 0 1px 3px rgba(31, 77, 52, .08);
+  --shadow-md: 0 6px 20px rgba(31, 77, 52, .12);
+  --shadow-lg: 0 14px 40px rgba(31, 77, 52, .18);
+  --radius:    14px;
+  --radius-sm: 9px;
+  --maxw:      1180px;
+  --serif: "Garamond", "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --sans:  "Segoe UI", system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
 body {
-  font-family: Garamond;
-  background-color: #f0f0f0;
-  color: #333;
-  text-align: center;
+  margin: 0;
+  font-family: var(--sans);
+  background: var(--cream);
+  color: var(--ink);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
 }
 
-h1 {
-  color: #2c6e49;
-  background-color: #e2f3e3;
-  font-size: clamp(28px, 8vw, 80px);
-  text-align: center;
-  margin-top: 60px;
-}
+h1, h2, h3, .brand { font-family: var(--serif); color: var(--green-700); }
+a { color: var(--green-700); }
 
-header {
-  background-color: #e2f3e3;
-  padding: 75px;
-}
-@media (max-width: 600px) {
-  header {
-    padding: 20px;
-  }
-}
+img { max-width: 100%; display: block; }
 
-/* Navigatiebalk */
-.main-nav {
-  background-color: #f7f7f7;
-  padding: 12px 30px;
+.container { max-width: var(--maxw); margin: 0 auto; padding: 0 22px; }
+
+/* ---------- Top navigation ---------- */
+.site-header {
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-bottom: 1px solid #ccc;
-  justify-content: space-between;
+  background: rgba(247, 245, 240, .85);
+  backdrop-filter: saturate(140%) blur(10px);
+  border-bottom: 1px solid rgba(44, 110, 73, .14);
+}
+.nav-inner {
   display: flex;
   align-items: center;
+  gap: 18px;
+  padding: 10px 22px;
+  max-width: var(--maxw);
+  margin: 0 auto;
+  flex-wrap: wrap;
 }
-/* === menustructuur === */
-.main-nav ul {
+.nav-brand {
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: .5px;
+  color: var(--green-700);
+  text-decoration: none;
+  white-space: nowrap;
+}
+.nav-brand span { color: var(--green-300); }
+.nav-links {
   list-style: none;
   display: flex;
-  gap: 30px;
+  gap: 6px;
   margin: 0;
   padding: 0;
-  text-align: center;
+  flex: 1;
+  flex-wrap: wrap;
 }
-/* === stijl van menu === */
-.main-nav li a {
+.nav-links a {
   text-decoration: none;
-  color: #333;
-  font-weight: bold;
-  font-size: 16px;
-  transition: color 0.3s ease;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 15px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  transition: background .2s ease, color .2s ease;
 }
-.main-nav li a:hover {
-  color: #006600;
-}
-/* Zoekveld rechts in de balk */
-.main-nav input[type="text"] {
-  font-family: Garamond;
-  padding: 6px 12px;
+.nav-links a:hover { background: var(--mint-100); color: var(--green-900); }
+.nav-links a.active { background: var(--green-700); color: #fff; }
+.nav-search {
+  border: 1px solid rgba(44, 110, 73, .25);
+  background: #fff;
+  border-radius: 999px;
+  padding: 8px 16px;
   font-size: 14px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  width: 150px;
+  font-family: var(--sans);
+  width: 190px;
+  transition: box-shadow .2s ease, border-color .2s ease;
+}
+.nav-search:focus { outline: none; border-color: var(--green-500); box-shadow: 0 0 0 3px rgba(76,149,108,.18); }
+
+/* ---------- Hero ---------- */
+.hero {
+  background: linear-gradient(160deg, var(--mint-100), var(--mint-50) 70%, var(--cream));
   text-align: center;
+  padding: 56px 22px 46px;
+  border-bottom: 1px solid rgba(44, 110, 73, .1);
 }
-/* Responsive navigatie (mobiel) */
-@media (max-width: 768px) {
-  .main-nav {
-    flex-direction: column;
-    align-items: stretch;
-  }
-  .main-nav ul {
-    flex-direction: column;
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-  .main-nav input[type="text"] {
-    width: 90%;
-    margin: 10px auto 0;
-  }
-  .gallery {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center; /* centrering op mobiel */
-    gap: 10px; /* optioneel */
-  }
-
-  .gallery img {
-    max-width: 90%;
-    height: auto;
-    display: block;
-  }
+.hero h1 {
+  margin: 0 0 10px;
+  font-size: clamp(34px, 7vw, 76px);
+  line-height: 1.02;
+  letter-spacing: 1px;
 }
-
-/* Plantengalerij */
-.plant-gallery {
-  max-width: 1200px;
+.hero p {
+  max-width: 620px;
   margin: 0 auto;
+  color: var(--muted);
+  font-style: italic;
+  font-family: var(--serif);
+  font-size: clamp(15px, 2.4vw, 20px);
+}
+
+/* ---------- Section shell ---------- */
+.section { padding: 34px 0 64px; }
+.section-title { text-align: center; margin: 6px 0 4px; font-size: clamp(24px, 4vw, 38px); }
+.section-lead { text-align: center; color: var(--muted); margin: 0 auto 26px; max-width: 640px; }
+
+/* ---------- Filter bar ---------- */
+.filters {
   display: flex;
   flex-wrap: wrap;
+  gap: 8px;
   justify-content: center;
-  gap: 20px;
-  padding: 20px;
+  margin: 0 auto 26px;
+  max-width: 900px;
 }
-.plant-item {
-  display: block;
-  text-align: center;
+.filter-chip {
+  border: 1px solid rgba(44, 110, 73, .25);
+  background: #fff;
+  color: var(--green-700);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all .18s ease;
+}
+.filter-chip:hover { background: var(--mint-50); }
+.filter-chip.active { background: var(--green-700); color: #fff; border-color: var(--green-700); }
+
+/* ---------- Index layout: filter sidebar + grid ---------- */
+.index-layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 30px;
+  align-items: start;
+}
+.index-main { min-width: 0; }
+.filter-panel {
+  position: sticky;
+  top: 74px;
+  background: var(--paper);
+  border: 1px solid rgba(44, 110, 73, .12);
+  border-radius: var(--radius);
+  padding: 16px 16px 20px;
+  box-shadow: var(--shadow-sm);
+}
+.filter-panel-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(44, 110, 73, .1);
+}
+.filter-panel-head h2 { font-size: 19px; margin: 0; }
+.filter-clear {
+  background: none; border: none; cursor: pointer;
+  color: var(--green-500); font-size: 12.5px; font-weight: 600; font-family: var(--sans);
+  padding: 2px 2px; transition: color .15s ease;
+}
+.filter-clear:hover { color: var(--green-900); text-decoration: underline; }
+.filter-clear:disabled { color: #c4c9c0; cursor: default; text-decoration: none; }
+.filter-group { margin-top: 16px; }
+.filter-heading {
+  font-family: var(--sans);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  font-weight: 700;
+  color: var(--muted);
+  margin: 0 0 9px;
+}
+.filter-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+@media (max-width: 760px) {
+  .index-layout { grid-template-columns: 1fr; gap: 18px; }
+  .filter-panel { position: static; }
+}
+
+/* ---------- Card grid ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 22px;
+}
+.card {
+  background: var(--paper);
+  border-radius: var(--radius);
+  overflow: hidden;
   text-decoration: none;
-  color: black;
-  width: 200px;
-  transition: transform 0.2s;
+  color: inherit;
+  box-shadow: var(--shadow-sm);
+  transition: transform .22s ease, box-shadow .22s ease;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(44,110,73,.06);
 }
-.plant-item:hover {
-  transform: scale(1.05);
-}
-.plant-item img {
-  width: 100%;
-  max-width: 600px;
-  height: auto;
-  object-fit: cover;
-  border-radius: 1px;
-}
-.plant-item p {
-  margin: 10px 0 0;
-}
-#plant-image {
-  width: 100%;
-  max-width: 400px;
-  height: auto;
-  display: block;
-  margin: 20px auto;
-  border-radius: 6px;
-  object-fit: contain;
-}
-
-}
-@media (max-width: 600px) {
-  .plant-gallery {
-    flex-direction: column;
-    padding: 10px;
-  }
-  .plant-container {
-  max-width: 300px;
-  margin: 0 auto;
-  padding: 20px;
-  text-align: left;
+.card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+.card-media { aspect-ratio: 4 / 3; overflow: hidden; background: var(--mint-50); }
+.card-media img { width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
+.card:hover .card-media img { transform: scale(1.06); }
+.card-body { padding: 13px 15px 16px; }
+.card-body h3 { margin: 0 0 2px; font-size: 19px; }
+.card-body .latin { font-style: italic; color: var(--muted); font-size: 14px; }
+.card-chips { margin-top: 9px; display: flex; flex-wrap: wrap; gap: 5px; }
+.match-reason { font-size: 12.5px; color: var(--muted); margin-top: 5px; }
+mark {
+  background: #fff1a8;
+  color: inherit;
+  font: inherit;            /* exact zelfde lettertype/gewicht/grootte als omringende tekst */
+  padding: 0;               /* geen extra ruimte → blijft tegen de tekst aan */
+  border-radius: 2px;
+  box-shadow: 0 0 0 2px #fff1a8;  /* iets ademruimte zonder de tekst te verschuiven */
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
 }
 
-#plant-image {
-  width: 100%;
-  height: auto;
-  display: block;
-  margin-bottom: 20px;
+/* ---------- Chips / badges ---------- */
+.chip {
+  display: inline-block;
+  background: var(--mint-100);
+  color: var(--green-900);
+  border-radius: 999px;
+  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.chip.season { background: #eaf3df; color: #466b1f; }
+.chip.part   { background: #e9f1ec; color: var(--green-700); }
+.badge-draft {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--sand);
+  color: var(--amber-ink);
+  border: 1px solid var(--sand-bord);
+  border-radius: 999px;
+  padding: 2px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .2px;
+}
+.badge-verified {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: #e6f5ea; color: var(--green-700);
+  border: 1px solid #b7e0c2; border-radius: 999px;
+  padding: 2px 10px; font-size: 11px; font-weight: 700;
 }
 
-#plant-recipe,
-#plant-info {
-  line-height: 1.6;
-  margin-bottom: 20px;
+/* ---------- Safety banner ---------- */
+.safety {
+  max-width: var(--maxw);
+  margin: 18px auto;
+  background: var(--sand);
+  border: 1px solid var(--sand-bord);
+  border-left: 5px solid var(--sand-bord);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  color: var(--amber-ink);
+  font-size: 14.5px;
 }
-  }
-  /* === DINERFOTO'S SCHERMBREED === */
-.dinerfoto {
-  width: 30%;
-  max-width: 30%;
-  height: auto;
-  display: block;
-  margin-bottom: 20px;
+.safety strong { color: #5e4711; }
+
+/* ---------- Plant detail ---------- */
+.detail { max-width: 980px; margin: 0 auto; padding: 30px 22px 70px; }
+.detail-top { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start; }
+.detail-hero img { width: 100%; border-radius: var(--radius); box-shadow: var(--shadow-md); aspect-ratio: 4/3; object-fit: cover; }
+.detail-head h1 { margin: 0 0 2px; font-size: clamp(30px, 5vw, 48px); }
+.detail-head .latin { font-style: italic; color: var(--muted); font-size: 18px; }
+.meta-list { list-style: none; padding: 0; margin: 18px 0 0; }
+.meta-list li { padding: 8px 0; border-bottom: 1px dashed rgba(44,110,73,.18); font-size: 15px; }
+.meta-list .k { font-weight: 700; color: var(--green-700); margin-right: 6px; }
+.chip-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+
+.detail-section { margin-top: 30px; }
+.detail-section h2 {
+  font-size: 24px; margin: 0 0 8px;
+  padding-bottom: 6px; border-bottom: 2px solid var(--mint-100);
+}
+.detail-section p { white-space: pre-line; margin: 0 0 10px; }
+.callout {
+  background: #fdecec; border: 1px solid #f3c7c7; border-left: 5px solid #d98b8b;
+  border-radius: var(--radius-sm); padding: 12px 16px; color: #7a3030;
+  white-space: pre-line;
+}
+.callout.warn { background: var(--sand); border-color: var(--sand-bord); border-left-color: var(--sand-bord); color: var(--amber-ink); }
+
+/* ---------- Giftige verwisselingen (lijst) ---------- */
+.verw-intro { margin: 0 0 14px; color: #3a423a; }
+.lookalike-list { display: grid; gap: 10px; }
+.lookalike {
+  background: #fafbf9;
+  border: 1px solid rgba(44,110,73,.12);
+  border-left: 5px solid #b7c9b5;
+  border-radius: var(--radius-sm);
+  padding: 11px 15px;
+}
+.lookalike.danger { background: #fdecec; border-color: #f3c7c7; border-left-color: #d98b8b; }
+.lookalike-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 5px; }
+.lookalike-naam { font-weight: 700; color: var(--ink); }
+.lookalike-latijn { font-style: italic; color: var(--muted); font-size: 14px; }
+.lookalike-onderscheid { margin: 0; white-space: pre-line; font-size: 14.5px; color: #3a423a; }
+.badge-giftig {
+  margin-left: auto; background: #d98b8b; color: #fff; border-radius: 999px;
+  padding: 2px 11px; font-size: 11px; font-weight: 700; white-space: nowrap;
+}
+.badge-veilig {
+  margin-left: auto; background: #e6f5ea; color: var(--green-700); border: 1px solid #b7e0c2;
+  border-radius: 999px; padding: 2px 11px; font-size: 11px; font-weight: 700; white-space: nowrap;
 }
 
-@media (max-width: 768px) {
-  .dinerfoto {
-    width: 100%;
-    max-width: 100%;
-  }
+.seasonbar { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }
+.month {
+  width: 34px; text-align: center; font-size: 11px; font-weight: 700;
+  padding: 5px 0; border-radius: 6px; background: #eef0ec; color: #aab0a6;
+}
+.month.on { background: var(--green-300); color: #2b3a12; }
 
-  h1 {
-    font-size: 28px;
-  }
+.kalender-row { margin: 10px 0; }
+.kalender-row .deel { font-weight: 700; color: var(--green-700); }
+.kalender-row .toep { color: var(--muted); font-size: 14px; }
 
-  header {
-    padding: 20px;
-  }
+.extra-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px,1fr)); gap: 10px; margin-top: 12px; }
+.extra-gallery img { border-radius: var(--radius-sm); aspect-ratio: 1; object-fit: cover; box-shadow: var(--shadow-sm); }
+
+.sources { font-size: 13px; color: var(--muted); margin-top: 8px; word-break: break-word; }
+.sources a { color: var(--green-500); }
+
+.btn {
+  display: inline-block; background: var(--green-700); color: #fff;
+  text-decoration: none; padding: 10px 20px; border-radius: 999px;
+  font-weight: 600; border: none; cursor: pointer; transition: background .2s ease, transform .15s ease;
+}
+.btn:hover { background: var(--green-900); transform: translateY(-1px); }
+.btn.ghost { background: transparent; color: var(--green-700); border: 1px solid var(--green-700); }
+.btn.ghost:hover { background: var(--mint-50); }
+.back-link { display: inline-block; margin-top: 26px; font-weight: 600; text-decoration: none; }
+
+/* ---------- Recipe cards ---------- */
+.recipe-card {
+  background: var(--paper); border-radius: var(--radius); box-shadow: var(--shadow-sm);
+  padding: 20px 22px; border: 1px solid rgba(44,110,73,.06); transition: box-shadow .2s ease, transform .2s ease;
+}
+.recipe-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+.recipe-card h3 { margin: 0 0 6px; font-size: 22px; }
+.recipe-meta { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 12px; }
+.recipe-card .plants-needed { font-size: 14px; }
+.recipe-card .plants-needed a { font-weight: 600; text-decoration: none; }
+.recipe-card .plants-needed a:hover { text-decoration: underline; }
+.recipe-body { white-space: pre-line; color: #3a423a; }
+.stack { display: grid; gap: 18px; }
+
+/* ---------- This season ---------- */
+.season-head { text-align: center; margin-bottom: 8px; }
+.season-pill {
+  display: inline-block; background: var(--green-700); color: #fff;
+  border-radius: 999px; padding: 6px 18px; font-weight: 700; font-size: 15px; margin-bottom: 6px;
+}
+
+/* ---------- Admin ---------- */
+.admin-wrap { max-width: 820px; margin: 0 auto; padding: 28px 22px 70px; }
+.admin-wrap label { display: block; font-weight: 600; margin: 14px 0 4px; color: var(--green-700); font-size: 14px; }
+.admin-wrap input[type=text], .admin-wrap textarea, .admin-wrap input[type=number] {
+  width: 100%; padding: 9px 12px; border: 1px solid rgba(44,110,73,.25); border-radius: var(--radius-sm);
+  font-family: var(--sans); font-size: 14px; background: #fff;
+}
+.admin-wrap textarea { min-height: 80px; resize: vertical; }
+.admin-wrap .hint { font-weight: 400; color: var(--muted); font-size: 12.5px; }
+.admin-out {
+  width: 100%; min-height: 240px; margin-top: 12px; font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+  font-size: 13px; border-radius: var(--radius-sm); border: 1px solid rgba(44,110,73,.25); padding: 12px; background: #fbfdfb;
+}
+.admin-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
+.field-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+/* ---------- Misc states ---------- */
+.empty { text-align: center; color: var(--muted); padding: 50px 20px; }
+.loading { text-align: center; color: var(--muted); padding: 50px 20px; }
+
+/* ---------- About ---------- */
+.prose { max-width: 720px; margin: 0 auto; padding: 10px 22px 60px; font-size: 16.5px; }
+.prose p { margin: 0 0 16px; }
+.prose h2 { font-size: 26px; margin: 28px 0 8px; }
+
+/* ---------- Footer ---------- */
+.site-footer {
+  background: var(--green-900); color: #d8e8dd; text-align: center;
+  padding: 26px 22px; font-size: 14px; margin-top: 40px;
+}
+.site-footer a { color: var(--green-300); }
+
+/* ---------- Sign up / diner ---------- */
+.signup-wrap { max-width: 760px; margin: 0 auto; padding: 24px 22px 70px; text-align: center; font-size: 16.5px; }
+.signup-wrap img.qr { width: min(420px, 90vw); height: auto; border-radius: var(--radius); box-shadow: var(--shadow-md); margin: 10px auto 20px; }
+.diner-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 14px; max-width: var(--maxw); margin: 0 auto; padding: 24px 22px; }
+.diner-grid img { width: 100%; border-radius: var(--radius); box-shadow: var(--shadow-sm); object-fit: cover; aspect-ratio: 4/3; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 760px) {
+  .detail-top { grid-template-columns: 1fr; }
+  .field-2 { grid-template-columns: 1fr; }
+  .nav-links { order: 3; width: 100%; justify-content: center; }
+  .nav-search { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto !important; }
 }

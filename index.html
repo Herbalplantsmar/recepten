@@ -1,125 +1,21 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HERBALPLANTSMAR</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HerbalPlantsMar — wilde & kruidige planten</title>
+  <meta name="description" content="Ontdek wilde en kruidige planten: waar je ze vindt, wat je ermee kunt, hoe je oogst en recepten per seizoen.">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css">
 </head>
-<header>
-        <h1>HERBALPLANTSMAR</h1>
-        <p>"The power of nature shown in plants, herbs, flowers and trees. <br> Silent secrets are everywhere, watch, smell, taste and listen!"</p>
- </header>
- <header>
-  <nav class="main-nav">
-    <ul>
-      <li><a href="index.html">Planten</a></li>
-      <li><a href="recepten.html">Recepten op seizoen</a></li>
-      <li><a href="over.html">Over Herbalplantsmar</a></li>
-      <li><a href="sign-up.html">Sign up for Dinner</a></li>
-    </ul>
-  <input type="text" id="plant-search" placeholder="Zoek...">
-</form>
-  </nav>
-</header>
-
-<body>
-    <section class="plant-gallery">
-      
-<a href="planten.html?plant=heermoes" class="plant-item">
-  <img src="Afbeeldingen/Heermoes.jpeg" alt="Heermoes">
-  <p>Heermoes<br><em>Equisetum arvense</em></p>
-</a>
-<a href="planten.html?plant=zevenblad" class="plant-item">
-  <img src="Afbeeldingen/IMG_Zevenblad.jpeg" alt="Zevenblad">
-  <p>Zevenblad<br><em>Aegopodium podagraria</em></p>
-</a>
-<a href="planten.html?plant=pimpernel" class="plant-item">
-  <img src="Afbeeldingen/IMG_9410.jpg" alt="Kleine pimpernel">
-  <p>Kleine pimpernel<br><em>Sanguisorba minor</em></p>
-</a>
-<a href="planten.html?plant=groveden" class="plant-item">
-            <img src="Afbeeldingen/pinussylvestris1.jpeg" alt="Grove den">
-            <p>Grove den<br><em>Pinus sylvestris</em></p>
- </a>
-<a href="planten.html?plant=brandnetel" class="plant-item">
-            <img src="Afbeeldingen/IMG_7433.jpg" alt="Brandnetel">
-            <p>Brandnetel<br><em>Urtica dioica</em></p> 
-  </a>
- <a href="planten.html?plant=paardenbloem" class="plant-item">
-            <img src="Afbeeldingen/IMG_7283.jpg" alt="Paardenbloem">
-            <p>Paardenbloem<br><em>Taraxacum officinale</em></p> 
-</a>
- <a href="planten.html?plant=veldkers" class="plant-item">
-            <img src="Afbeeldingen/plant2.jpg" alt="plant 2">
-            <p>Veldkers<br><em>Cardamine hirsuta</em></p>
-</a>
- <a href="planten.html?plant=hazelaar" class="plant-item">
-            <img src="Afbeeldingen/plant1.jpg" alt="plant 1">
-            <p>Hazelaar<br><em>Corylus avellana L</em></p>
- </a>
- <a href="planten.html?plant=vijg" class="plant-item">
-            <img src="Afbeeldingen/IMG_1918.jpg" alt="Vijg">
-            <p>Vijgenboom<br><em>Ficus carica</em></p>
-</a>
- <a href="planten.html?plant=mirtsalie" class="plant-item">
-            <img src="Afbeeldingen/IMG_9198.jpg" alt="Mirt-Salie">
-            <p>Mirt-Salie<br><em>Salvia microphylla</em></p>
-</a>
- <a href="planten.html?plant=weegbree" class="plant-item">
-            <img src="Afbeeldingen/IMG_0825.jpg" alt="Weegbree">
-            <p>Smalle Weegbree<br><em>Plantago lanceolata</em></p>
-</a>
- <a href="planten.html?plant=sleedoorn" class="plant-item">
-            <img src="Afbeeldingen/IMG_7510.jpg" alt="Sleedoorn">
-            <p>Sleedoorn<br><em>Prunus spinoza</em></p>
-</a>
-<a href="planten.html?plant=tammekastanje" class="plant-item">
-            <img src="Afbeeldingen/IMG_0389.jpg" alt="Tamme Kastanje">
-            <p>Tamme Kastanje<br><em>Castania Sativa</em></p>
-</a>
-<a href="planten.html?plant=oca" class="plant-item">
-            <img src="Afbeeldingen/IMG_0733.jpg" alt="Oca">
-            <p>Oca<br><em>Oxalis tuberosa</em></p>
-</a>
-<a href="planten.html?plant=vlier" class="plant-item">
-            <img src="Afbeeldingen/IMG_7472.jpg" alt="Vlier">
-            <p>Vlier<br><em>Sambucus nigra</em></p>
-     </a>
- <a href="planten.html?plant=venkel" class="plant-item">
-            <img src="Afbeeldingen/IMG_7068.jpg" alt="Venkel">
-            <p>Venkel<br><em>Foeniculum vulgare</em></p>
-</a>
-    </section>
-
-    <div id="recipe-modal" class="recipe-modal">
-        <div class="recipe-content">
-            <span class="close" onclick="closeRecipe()">×</span>
-            <h2 id="recipe-title"></h2>
-            <p id="recipe-text"></p>
-        </div>
-    </div>
-
-    <script src="scripts.js"></script>
-    <script>
-  const searchInput = document.getElementById('plant-search');
-  const plantItems = document.querySelectorAll('.plant-item');
-
-  searchInput.addEventListener('input', function () {
-    const query = this.value.toLowerCase();
-    plantItems.forEach(item => {
-      const name = item.getAttribute('data-name').toLowerCase();
-      if (name.includes(query)) {
-        item.style.display = 'block';
-      } else {
-        item.style.display = 'none';
-      }
-    });
-  });
-</script>
+<body data-page="index">
+  <header id="site-header"></header>
+  <section class="hero">
+    <h1>HERBALPLANTSMAR</h1>
+    <p>"The power of nature shown in plants, herbs, flowers and trees. Silent secrets are everywhere — watch, smell, taste and listen!"</p>
+  </section>
+  <main id="app" class="section"></main>
+  <footer id="site-footer"></footer>
+  <script src="app.js"></script>
 </body>
 </html>
-
-
-
-

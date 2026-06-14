@@ -2,11 +2,25 @@
 <html lang="nl">
 <head>
   <meta charset="UTF-8">
-  <title>Foto's</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vorige diners — HerbalPlantsMar</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <img src="Afbeeldingen/diner-fotos/diner1t.jpg" class="dinerfoto" alt="1">
-  <img src="Afbeeldingen/diner-fotos/diner2t.jpg" class="dinerfoto" alt="2">
-  <a href="index.html">← Terug </a>
+<body data-page="diner">
+  <header id="site-header"></header>
+  <section class="section" style="padding-bottom:0">
+    <h1 class="section-title">Vorige diners</h1>
+    <p class="section-lead">Sfeerbeelden van eerdere Ode aan de Spontane Planten-diners.</p>
+  </section>
+  <main id="app">
+    <div class="diner-grid">
+      <img src="Afbeeldingen/diner-fotos/diner1t.jpg" alt="Diner 1">
+      <img src="Afbeeldingen/diner-fotos/diner2t.jpg" alt="Diner 2">
+    </div>
+    <p style="text-align:center;margin-top:24px"><a class="back-link" href="sign-up.html">← Terug naar diner</a></p>
+  </main>
+  <footer id="site-footer"></footer>
+  <script src="app.js"></script>
 </body>
 </html>

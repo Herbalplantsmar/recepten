@@ -1,0 +1,9 @@
+# Claude Code local overrides (may contain tokens/secrets)
+.claude/settings.local.json
+
+# Playwright MCP scratch output
+.playwright-mcp/
+
+# OS cruft
+Thumbs.db
+.DS_Store

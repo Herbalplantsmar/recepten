@@ -1,0 +1,82 @@
+[
+  {
+    "id": "paardenbloem-quinoa-salade",
+    "titel": "Ingelegde paardenbloem met quinoa-pompoensalade",
+    "seizoenen": ["lente", "zomer"],
+    "planten": ["paardenbloem"],
+    "andereIngredienten": ["wittewijnazijn", "ui", "knoflook", "walnoten", "cranberries", "olijfolie", "gegrilde pompoen", "gorgonzola", "quinoa", "zout & peper"],
+    "bereiding": "Ingrediënten voor 1 portie:\n- bos (volle hand) paardenbloemblad\n- 1 el wittewijnazijn\n- 2 uien\n- 2 knoflooktenen\n- handje walnoten\n- handje cranberries\n- veel olijfolie (+ eventueel klontje boter)\n- gegrilde pompoen uit de oven (voorgekookte bietjes gaan ook erg goed samen)\n- gorgonzola\n- portie gekookte quinoa\n- zout & peper\n\n• Was het paardenbloemblad en breng aan de kook in een pannetje water met een goede schep zout en de wittewijnazijn. Laat 10 minuten zachtjes koken tot het goed zacht is. Giet af, druk goed uit in een zeef. Doe in een kommetje met (kruiden)olie, zout en peper voor wat extra smaak.\n• Snij ondertussen de ui in halve ringen en de knoflook fijn, smoor dit in een koekenpan met royaal olie tot het goed begint te karameliseren (minstens 15 minuten). Voeg de gekookte, gemarineerde paardenbloem toe en bak op hoog vuur. Voeg de walnoten toe zodat deze knapperig worden. Voeg na ongeveer 5 minuten de pompoen en cranberries toe en breng op smaak met peper en zout.\n• Verdeel stukjes gorgonzola over de warme pompoen zodat deze een beetje smelt. Verdeel over de quinoa (rijst of ander graan) op je bord en eet smakelijk van deze oer-Europese lekkernij!",
+    "bron": "eigen recept",
+    "status": "verified"
+  },
+  {
+    "id": "heermoes-thee",
+    "titel": "Mineraalrijke heermoes-thee",
+    "seizoenen": ["lente", "zomer"],
+    "planten": ["heermoes"],
+    "andereIngredienten": ["water"],
+    "bereiding": "Gebruik het verse of gedroogde kruid voor een gezonde thee, goed voor botten, bindweefsel, haar en tanden. Om meer mineralen (silicium en kiezelzuur) te onttrekken: week het eerst een half uur in koud water en kook daarna 5 minuten, of doe het meteen in de pan en laat minstens 15 minuten doorkoken.\n\nTip: maal de gedroogde plant tot een superfood-poeder en voeg toe aan smoothies en sapjes voor extra mineralen.\n\nLet op: langere tijd rauw eten wordt afgeraden vanwege thiaminase (breekt vitamine B1 af).",
+    "bron": "eigen recept",
+    "status": "verified"
+  },
+  {
+    "id": "zevenblad-veelzijdig",
+    "titel": "Zevenblad door soep, pesto of als groente",
+    "seizoenen": ["lente", "zomer"],
+    "planten": ["zevenblad"],
+    "andereIngredienten": ["naar keuze: soepbasis, pasta, ei, kaas, boter"],
+    "bereiding": "Zevenblad is heel veelzijdig. Het heeft een kruidige, zilte smaak zonder de bitterheid die veel wilde planten hebben. Het leent zich goed voor soepen, omeletten, lasagne en pesto, door de roerbak, of gekookt als groente in zout water met daarna een klontje boter erbij.",
+    "bron": "eigen recept",
+    "status": "verified"
+  },
+  {
+    "id": "pimpernel-spread",
+    "titel": "Cannellini-spread met kleine pimpernel",
+    "seizoenen": ["lente", "zomer"],
+    "planten": ["pimpernel"],
+    "andereIngredienten": ["cannellinibonen", "tahini", "honing", "citroenmelisse", "citroen", "knoflook", "olijfolie", "zeezout"],
+    "bereiding": "Verwerk de kleine pimpernel in een spread van cannellinibonen met tahini, honing, citroenmelisse, citroen, knoflook, olijfolie en zeezout. Ook heerlijk in een salade met jonge blaadjes en wat citroenolie.",
+    "bron": "eigen recept",
+    "status": "verified"
+  },
+  {
+    "id": "groveden-muglio-siroop",
+    "titel": "Muglio — dennenappelsiroop",
+    "seizoenen": ["lente", "zomer"],
+    "planten": ["groveden"],
+    "andereIngredienten": ["jonge dennenappels", "suiker"],
+    "bereiding": "Muglio is een dennenappelsiroop uit Noord-Italië, hier gemaakt met de jonge appels van de grove den (Pinus sylvestris). Het hele aroma rond deze boom is fantastisch. De dennennaalden kun je het hele jaar door vinden, plukken, eten en gebruiken in thee — een bron van vitamine C.",
+    "bron": "eigen recept",
+    "status": "verified"
+  },
+  {
+    "id": "brandnetelsoep",
+    "titel": "Brandnetelsoep van jonge toppen",
+    "seizoenen": ["lente"],
+    "planten": ["brandnetel"],
+    "andereIngredienten": ["ui", "bouillon", "aardappel of room"],
+    "bereiding": "Maak een soep van jonge brandneteltoppen — rijk aan ijzer. Door koken of drogen verdwijnt de brandende werking volledig.",
+    "bron": "eigen recept",
+    "status": "verified"
+  },
+  {
+    "id": "veldkers-pesto-burgers",
+    "titel": "Veldkers-pesto & azukibonen-burgers",
+    "seizoenen": ["lente", "herfst"],
+    "planten": ["veldkers"],
+    "andereIngredienten": ["azukibonen", "olijfolie", "noten", "knoflook"],
+    "bereiding": "De veldkers smaakt licht pittig (denk aan tuinkers, waterkers, rucola) met een knapperige textuur. Maak er een pesto van, of azukibonen-veldkersburgers. Rauw tussen je boterham of door je (roer)ei en omelet is ook erg fijn. Wel even wat gepriegel met de kleine blaadjes.",
+    "bron": "eigen recept",
+    "status": "verified"
+  },
+  {
+    "id": "hazelaar-katjes-chocola",
+    "titel": "Hazelaarkatjes in chocola",
+    "seizoenen": ["winter", "lente"],
+    "planten": ["hazelaar"],
+    "andereIngredienten": ["pure chocola"],
+    "bereiding": "De felgele mannelijke katjes van de hazelaar (Corylus avellana) kun je eten — net als het blad en de noot — rauw of gedroogd, als thee of in chocola. Dat laatste is verrassend lekker: luchtig, knapperig, bijna noot- of rijstachtig van smaak in combinatie met pure chocola. Drogen en tot meel malen om andere melen te verrijken kan ook.",
+    "bron": "eigen recept",
+    "status": "verified"
+  }
+]
