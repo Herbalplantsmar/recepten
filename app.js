@@ -359,7 +359,6 @@
       ["seizoen.html", "Dit seizoen", "seizoen"],
       ["projecten.html", "Projecten", "projecten"],
       ["over.html", "Over", "over"],
-      ["sign-up.html", "Diner", "signup"],
     ];
     const ul = el("ul", { class: "nav-links" },
       links.map(([href, label, key]) =>
@@ -368,12 +367,16 @@
       type: "text", class: "nav-search", id: "nav-search",
       placeholder: "Zoek plant…", "aria-label": "Zoek plant",
     });
-    const inner = el("div", { class: "nav-inner" }, [
-      el("a", { href: "index.html", class: "nav-brand", html: "HERBAL<span>PLANTS</span>MAR" }),
-      ul, search,
-    ]);
+    // De index toont de naam groot in de hero eronder. Om "HERBALPLANTSMAR"
+    // niet twee keer te tonen, krijgt de balk daar alleen een klein blad-merk;
+    // de balk versmelt dan met de hero tot één bovenste blok (.on-hero).
+    const onHero = page === "index";
+    const brand = onHero
+      ? el("a", { href: "index.html", class: "nav-brand nav-brand--mark", "aria-label": "HerbalPlantsMar — home", html: "🌿" })
+      : el("a", { href: "index.html", class: "nav-brand", html: "HERBAL<span>PLANTS</span>MAR" });
+    const inner = el("div", { class: "nav-inner" }, [brand, ul, search]);
     const header = document.getElementById("site-header") || el("header", { id: "site-header" });
-    header.className = "site-header";
+    header.className = "site-header" + (onHero ? " on-hero" : "");
     header.innerHTML = "";
     header.appendChild(inner);
     if (!header.parentNode) document.body.insertBefore(header, document.body.firstChild);
@@ -482,10 +485,6 @@
     const root = document.getElementById("app");
     root.innerHTML = "";
 
-    const anyDraft = plants.some((p) => p.status !== "verified");
-    if (anyDraft) root.appendChild(safetyBanner(
-      "een deel van de planteninformatie is nog concept en wordt nog door ons nagekeken. Vertrouw nooit blind op één bron bij het wildplukken."));
-
     // filter state
     const state = { q: "", locatie: null, deel: null, seizoen: null };
 
@@ -526,10 +525,9 @@
           el("span", { class: "latin" }, highlight(p.latijn, q)),
         ];
         if (matchFamilie) body.push(el("div", { class: "match-reason" }, ["↳ Familie: ", highlight(p.familie, q)]));
-        body.push(el("div", { class: "card-chips" }, (p.eetbareDelen || []).slice(0, 3).map((d) => chip(d, "part"))));
         const card = el("a", { class: "card", href: "plant.html?plant=" + encodeURIComponent(p.id) }, [
           el("div", { class: "card-media" }, img(p.afbeelding, p.naam, p.naam)),
-          el("div", { class: "card-body" }, body),
+          el("div", { class: "card-body card-body--center" }, body),
         ]);
         grid.appendChild(card);
       });
@@ -559,13 +557,17 @@
     // filters staan ingeklapt achter één knop (met teller) → planten op de voorgrond
     const countBadge = el("span", { class: "count", hidden: "" }, "0");
     const toggleBtn = el("button", {
-      class: "filter-toggle", type: "button", "aria-expanded": "false", "aria-controls": "filter-panel",
+      class: "filter-toggle", type: "button", "aria-expanded": "false",
+      "aria-controls": "filter-panel", "aria-label": "Filters", title: "Filters",
       onclick: () => {
         const opening = panel.hasAttribute("hidden");
         panel.toggleAttribute("hidden", !opening);
         toggleBtn.setAttribute("aria-expanded", opening ? "true" : "false");
       },
-    }, [el("span", null, "Filters"), countBadge]);
+    }, [
+      el("span", { class: "filter-toggle-bars", "aria-hidden": "true" }, [el("i"), el("i"), el("i")]),
+      countBadge,
+    ]);
 
     function refreshAll() {
       gLoc.render(); gDeel.render(); gSeiz.render();
@@ -621,7 +623,7 @@
 
     if (p.status !== "verified") {
       wrap.appendChild(safetyBanner(
-        "deze plantbeschrijving is nog <strong>concept</strong> (door Claude opgesteld, nog niet door ons geverifieerd). Controleer altijd zelf bij meerdere betrouwbare bronnen vóór je iets eet."));
+        "deze plantbeschrijving is nog <strong>concept</strong> en nog niet door ons geverifieerd. Controleer altijd zelf bij meerdere betrouwbare bronnen vóór je iets eet."));
     }
 
     // top: image + head + meta

@@ -79,7 +79,7 @@ en **Kopieer** of **Download** het blok. Plak het in de lijst in `data/plants.js
 
 ## ⚠️ Inhoud & veiligheid
 
-De plantbeschrijvingen met `"status": "draft"` zijn door Claude opgesteld op basis van openbare
+De plantbeschrijvingen met `"status": "draft"` zijn opgesteld op basis van openbare
 bronnen en zijn **nog niet door jou geverifieerd**. De site toont daarom een waarschuwingsbanner.
 Loop ze na, corrigeer waar nodig (let vooral op `eetbareDelen`, `giftigeVerwisseling` en `waarschuwing`),
 en zet de status op `"verified"` zodra je ze vertrouwt. Eet nooit een plant zonder 100% zekere determinatie.
