@@ -381,6 +381,7 @@ img { max-width: 100%; display: block; }
 .card-body .latin { font-style: italic; color: var(--muted); font-size: 13.5px; }
 .card-body--center { text-align: center; }
 .card-chips { margin-top: 7px; display: flex; flex-wrap: wrap; gap: 5px; }
+.card-body--center .card-chips { justify-content: center; }
 .match-reason { font-size: 12.5px; color: var(--muted); margin-top: 5px; }
 mark {
   background: #fff1a8;

@@ -748,7 +748,7 @@
 
     if (p.status !== "verified") {
       wrap.appendChild(safetyBanner(
-        "deze plantbeschrijving is nog <strong>concept</strong> en nog niet door ons geverifieerd. Controleer altijd zelf bij meerdere betrouwbare bronnen vóór je iets eet."));
+        "deze plantbeschrijving is nog <strong>concept</strong> en nog niet door mij geverifieerd. Controleer altijd zelf bij meerdere betrouwbare bronnen vóór je iets eet."));
     }
 
     // top: image + head + meta
@@ -922,7 +922,7 @@
         if (r.status && r.status !== "verified") chips.push(draftBadge(r.status));
         grid.appendChild(el("a", { class: "card", href: "recepten.html?recept=" + encodeURIComponent(r.id) }, [
           el("div", { class: "card-media" }, img(receptFoto(r, map), r.titel, r.titel)),
-          el("div", { class: "card-body" }, [
+          el("div", { class: "card-body card-body--center" }, [
             el("h3", null, r.titel),
             el("div", { class: "card-chips" }, chips),
           ]),
