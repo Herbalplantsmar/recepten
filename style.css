@@ -228,8 +228,8 @@ img { max-width: 100%; display: block; }
   box-shadow: var(--shadow-lg);
 }
 .home-tile .ht-icon { font-size: 34px; line-height: 1; }
-.home-tile .ht-label { font-family: var(--serif); font-size: 28px; font-weight: 600; color: var(--green-700); line-height: 1.1; }
-.home-tile .ht-sub { font-size: 13px; color: var(--muted); line-height: 1.35; }
+.home-tile .ht-label { font-family: var(--serif); font-size: 33px; font-weight: 600; color: var(--green-700); line-height: 1.1; }
+.home-tile .ht-sub { font-size: 15px; color: var(--muted); line-height: 1.35; }
 @media (max-width: 820px) {
   .home-tiles { grid-template-columns: repeat(2, 1fr); margin-top: 18px; }
 }
@@ -536,13 +536,6 @@ mark {
 .recipe-body { white-space: pre-line; color: #3a423a; }
 .stack { display: grid; gap: 18px; }
 
-/* ---------- This season ---------- */
-.season-head { text-align: center; margin-bottom: 8px; }
-.season-pill {
-  display: inline-block; background: var(--green-700); color: #fff;
-  border-radius: 999px; padding: 6px 18px; font-weight: 700; font-size: 15px; margin-bottom: 6px;
-}
-
 /* ---------- Admin ---------- */
 .admin-wrap { max-width: 820px; margin: 0 auto; padding: 28px 22px 70px; }
 .admin-wrap label { display: block; font-weight: 600; margin: 14px 0 4px; color: var(--green-700); font-size: 14px; }
@@ -676,12 +669,6 @@ mark {
 @media (max-width: 760px) { .theme-panel { bottom: 78px; left: 18px; right: 18px; width: auto; } }
 
 /* ---------- Projecten ---------- */
-.proj-intro {
-  max-width: 760px; margin: 0 auto; padding: 8px 22px 4px;
-  text-align: center; font-size: 16.5px;
-}
-.proj-intro p { margin: 0 auto 14px; max-width: 700px; }
-
 .project-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px;
   max-width: var(--maxw); margin: 26px auto 0; padding: 0 22px;

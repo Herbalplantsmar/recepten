@@ -876,27 +876,25 @@
     const rid = new URLSearchParams(location.search).get("recept");
     if (rid) { renderReceptDetail(rid, recipes, map); return; }
 
-    const state = { seizoen: null };
-
-    const filters = el("div", { class: "filters" });
-    const drawFilters = () => {
-      filters.innerHTML = "";
-      filters.appendChild(el("span", { class: "filter-chip", style: "background:transparent;border:none;color:#6b7268;cursor:default;" }, "Seizoen:"));
-      Object.keys(SEIZOENEN).forEach((s) => filters.appendChild(el("button", {
-        class: "filter-chip" + (state.seizoen === s ? " active" : ""),
-        onclick: () => { state.seizoen = state.seizoen === s ? null : s; drawFilters(); draw(); },
-      }, SEIZOENEN[s].label)));
-    };
+    const state = { q: "" };
 
     // zelfde tegel-format als de planten: foto + titel, 3 naast elkaar
     const grid = el("div", { class: "grid" });
     // zelfde ordening als de planten: op titel (NL), recepten zonder foto achteraan
     const heeftFoto = (r) => { const f = receptFoto(r, map); return !!(f && f.trim()); };
+    // zoeken op titel, gelinkte planten en losse ingrediënten
+    function matchRecept(r, q) {
+      const hay = (r.titel + " "
+        + (r.planten || []).map((id) => (map[id] || {}).naam || "").join(" ") + " "
+        + (r.andereIngredienten || []).join(" ")).toLowerCase();
+      return hay.includes(q);
+    }
     function draw() {
       grid.innerHTML = "";
-      const list = (recipes || []).filter((r) => !state.seizoen || (r.seizoenen || []).includes(state.seizoen))
+      const q = state.q.trim().toLowerCase();
+      const list = (recipes || []).filter((r) => !q || matchRecept(r, q))
         .sort((a, b) => (heeftFoto(b) - heeftFoto(a)) || a.titel.localeCompare(b.titel, "nl"));
-      if (!list.length) { grid.appendChild(el("div", { class: "empty" }, "Geen recepten voor dit seizoen.")); return; }
+      if (!list.length) { grid.appendChild(el("div", { class: "empty" }, q ? "Geen recepten gevonden." : "Nog geen recepten.")); return; }
       list.forEach((r) => {
         const chips = (r.seizoenen || []).map((s) => chip(SEIZOENEN[s] ? SEIZOENEN[s].label : s, "season"));
         if (r.status && r.status !== "verified") chips.push(draftBadge(r.status));
@@ -910,8 +908,17 @@
       });
     }
 
-    drawFilters();
-    root.appendChild(el("div", { class: "container" }, [filters, grid]));
+    // zoekbalk identiek aan de planten-galerij → de balk onder de tabs is overal gelijk
+    const searchInput = el("input", {
+      type: "search", class: "plant-search", placeholder: "Zoek recept…",
+      "aria-label": "Zoek recept", value: state.q,
+    });
+    searchInput.oninput = function () { state.q = this.value; draw(); };
+
+    root.appendChild(el("div", { class: "container" }, [
+      el("div", { class: "filter-bar" }, [searchInput]),
+      grid,
+    ]));
     draw();
   }
 
@@ -978,11 +985,6 @@
     const m = now.getMonth() + 1;
     const seizoen = seizoenVanMaand(m);
 
-    root.appendChild(el("div", { class: "container season-head" }, [
-      el("div", { class: "season-pill" }, SEIZOENEN[seizoen].label + " · " + MAAND_LANG[m - 1]),
-      el("p", { class: "section-lead" }, "Dit kun je nu in de natuur vinden en oogsten."),
-    ]));
-
     // plants harvestable this month
     const nu = [];
     plants.forEach((p) => {
@@ -993,20 +995,38 @@
     const heeftFoto = (p) => !!(p.afbeelding && p.afbeelding.trim());
     nu.sort((a, b) => (heeftFoto(b.p) - heeftFoto(a.p)) || a.p.naam.localeCompare(b.p.naam, "nl"));
 
+    const state = { q: "" };
     const grid = el("div", { class: "grid" });
-    if (!nu.length) grid.appendChild(el("div", { class: "empty" }, "Nog geen seizoensdata. Voeg seizoenskalenders toe via admin."));
-    nu.forEach(({ p }) => {
-      // zelfde kaart als de planten-galerij: foto + naam + latijn, gecentreerd
-      grid.appendChild(el("a", { class: "card", href: "plant.html?plant=" + encodeURIComponent(p.id) }, [
-        el("div", { class: "card-media" }, img(p.afbeelding, p.naam, p.naam)),
-        el("div", { class: "card-body card-body--center" }, [
-          el("h3", null, p.naam),
-          el("span", { class: "latin" }, p.latijn),
-        ]),
-      ]));
+    function draw() {
+      grid.innerHTML = "";
+      const q = state.q.trim().toLowerCase();
+      const list = nu.filter(({ p }) => !q || (p.naam + " " + p.latijn).toLowerCase().includes(q));
+      if (!list.length) {
+        grid.appendChild(el("div", { class: "empty" },
+          nu.length ? "Geen planten gevonden." : "Nog geen seizoensdata. Voeg seizoenskalenders toe via admin."));
+        return;
+      }
+      list.forEach(({ p }) => {
+        // zelfde kaart als de planten-galerij: foto + naam + latijn, gecentreerd
+        grid.appendChild(el("a", { class: "card", href: "plant.html?plant=" + encodeURIComponent(p.id) }, [
+          el("div", { class: "card-media" }, img(p.afbeelding, p.naam, p.naam)),
+          el("div", { class: "card-body card-body--center" }, [
+            el("h3", null, p.naam),
+            el("span", { class: "latin" }, p.latijn),
+          ]),
+        ]));
+      });
+    }
+
+    // zoekbalk identiek aan de planten-galerij → de balk onder de tabs is overal gelijk
+    const searchInput = el("input", {
+      type: "search", class: "plant-search", placeholder: "Zoek plant…",
+      "aria-label": "Zoek plant", value: state.q,
     });
-    root.appendChild(el("div", { class: "container" }, el("h2", { class: "section-title" }, "Nu te oogsten")));
+    searchInput.oninput = function () { state.q = this.value; draw(); };
+    root.appendChild(el("div", { class: "container" }, el("div", { class: "filter-bar" }, [searchInput])));
     root.appendChild(el("div", { class: "container" }, grid));
+    draw();
 
     // recipes for this season
     const recs = (recipes || []).filter((r) => (r.seizoenen || []).includes(seizoen));
