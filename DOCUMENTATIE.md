@@ -1,4 +1,4 @@
-# Documentatie — HerbalPlantsMar
+# Documentatie — Marijne Schrama
 
 De technische kant van de site: hoe je planten en recepten toevoegt, hoe alles in
 elkaar zit, en hoe je de site lokaal draait en publiceert. Voor de site zelf, zie de
@@ -14,7 +14,7 @@ plant.html        Detailpagina van één plant  (plant.html?plant=<id>)
 recepten.html     Recepten, filterbaar op seizoen + links naar de benodigde planten
 seizoen.html      "Dit seizoen" — toont automatisch wat je nu kunt oogsten (op basis van de datum)
 projecten.html    Wildplukwandelingen, workshops en proeverijen
-over.html         Over HerbalPlantsMar
+over.html         Over Marijne Schrama
 sign-up.html      Diner-inschrijving
 diner-fotos.html  Foto's van vorige diners
 admin.html        Formulier dat JSON genereert om een plant toe te voegen/bewerken (geen code nodig)

@@ -1,5 +1,5 @@
 /* =========================================================
-   HERBALPLANTSMAR — app engine
+   MARIJNE SCHRAMA — app engine
    One file renders every page, driven by data/plants.json
    + data/recipes.json. Page chosen via <body data-page="...">.
    No build step, no dependencies.
@@ -395,7 +395,7 @@
     const f = document.getElementById("site-footer") || el("footer", { id: "site-footer" });
     f.className = "site-footer";
     f.innerHTML =
-      "<strong>HerbalPlantsMar</strong> — wilde & kruidige planten, recepten en seizoen.<br>" +
+      "<strong>Marijne Schrama</strong> — wilde & kruidige planten, recepten en seizoen.<br>" +
       "Eet nooit een plant zonder 100% zekere determinatie. Informatie op deze site is educatief, geen medisch advies.";
     if (!f.parentNode) document.body.appendChild(f);
   }
@@ -755,10 +755,10 @@
         el("h1", null, "Plant niet gevonden"),
         el("a", { class: "back-link", href: "index.html#planten" }, "← Terug naar overzicht"),
       ]));
-      document.title = "Plant niet gevonden — HerbalPlantsMar";
+      document.title = "Plant niet gevonden — Marijne Schrama";
       return;
     }
-    document.title = p.naam + " — HerbalPlantsMar";
+    document.title = p.naam + " — Marijne Schrama";
 
     const wrap = el("div", { class: "detail" });
 
@@ -1018,10 +1018,10 @@
         el("h1", null, "Recept niet gevonden"),
         el("a", { class: "back-link", href: "index.html#recepten" }, "← Terug naar recepten"),
       ]));
-      document.title = "Recept niet gevonden — HerbalPlantsMar";
+      document.title = "Recept niet gevonden — Marijne Schrama";
       return;
     }
-    document.title = r.titel + " — HerbalPlantsMar";
+    document.title = r.titel + " — Marijne Schrama";
 
     const head = el("div", { class: "detail-head" }, [
       el("h1", null, r.titel),

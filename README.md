@@ -1,8 +1,8 @@
-# HerbalPlantsMar 🌿
+# Marijne Schrama 🌿
 
 Wilde planten zijn overal — je hoeft alleen te leren kijken.
 
-HerbalPlantsMar gaat over de kracht en schoonheid van wilde en kruidige planten:
+Marijne Schrama gaat over de kracht en schoonheid van wilde en kruidige planten:
 wat er om je heen groeit, waar je het vindt, wat je ermee kunt, en hoe je er met
 respect mee omgaat. Een plek om de wildernis in je eigen omgeving te (her)ontdekken —
 met je handen, je neus en je tong.

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-HerbalPlantsMar — a **Dutch-language** static website about wild & herbal (foraging) plants: where to find them, what's edible, how to harvest, toxic lookalikes, and seasonal recipes. Hosted on GitHub Pages. **No build step, no framework, no dependencies, no package manager.** All UI text and content are in Dutch.
+Marijne Schrama — a **Dutch-language** static website about wild & herbal (foraging) plants: where to find them, what's edible, how to harvest, toxic lookalikes, and seasonal recipes. Hosted on GitHub Pages. **No build step, no framework, no dependencies, no package manager.** All UI text and content are in Dutch.
 
 ## Running locally
 
